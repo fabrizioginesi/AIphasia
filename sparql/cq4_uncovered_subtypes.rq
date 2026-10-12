@@ -1,0 +1,21 @@
+# Competency Question 4
+# "Quali sottotipi di afasia (post-ictus e PPA) restano scoperti dagli strumenti IA mappati?"
+#
+# Atteso: l'intera famiglia delle afasie transcorticali (motoria, sensoriale, mista)
+# e la PPA atipica hanno copertura zero.
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+
+SELECT ?sottotipo (COUNT(DISTINCT ?ca) AS ?n) WHERE {
+  VALUES ?tipo {
+    aiaph:BrocaAphasia aiaph:WernickeAphasia aiaph:GlobalAphasia aiaph:ConductionAphasia
+    aiaph:TranscorticalMotorAphasia aiaph:TranscorticalSensoryAphasia aiaph:MixedTranscorticalAphasia
+    aiaph:AnomicAphasia aiaph:SemanticVariantPPA aiaph:NonfluentAgrammaticVariantPPA
+    aiaph:LogopenicVariantPPA aiaph:AtypicalOrUnclassifiedPPA
+  }
+  ?tipo rdfs:label ?sottotipo .
+  FILTER(lang(?sottotipo) = "it")
+  OPTIONAL { ?ca aiaph:targetsAphasiaType ?tipo . }
+}
+GROUP BY ?sottotipo
+ORDER BY ?n

@@ -1,0 +1,24 @@
+# Competency Question 6
+# "Le due famiglie di strumenti IA (comportamentale/di superficie vs covert/consciential
+#  — decodifica del linguaggio interiore) mostrano una differenza di accuratezza
+#  statisticamente significativa?"
+#
+# Atteso: nessuna differenza significativa (p=0,796), ma eterogeneità interna molto
+# più alta nella famiglia covert/consciential (I²=84,8% contro 54,5%).
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+
+SELECT ?pool ?k ?pooledH ?ciLower ?ciUpper ?iSquared WHERE {
+  ?pool a aiaph:MetaAnalyticPool ; rdfs:label ?poolLabel ;
+        aiaph:kStudies ?k ; aiaph:pooledH ?pooledH ;
+        aiaph:ciLower ?ciLower ; aiaph:ciUpper ?ciUpper ; aiaph:iSquared ?iSquared .
+  BIND(?poolLabel AS ?pool)
+}
+ORDER BY DESC(?pooledH)
+
+# Per il verdetto di significatività, eseguire separatamente:
+# SELECT ?differenceH ?zScore ?pValue ?isStatisticallySignificant WHERE {
+#   ?c a aiaph:MetaAnalysisComparison ; aiaph:differenceH ?differenceH ;
+#      aiaph:zScore ?zScore ; aiaph:pValue ?pValue ;
+#      aiaph:isStatisticallySignificant ?isStatisticallySignificant .
+# }

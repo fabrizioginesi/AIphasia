@@ -1,0 +1,31 @@
+# Competency Question 8
+# "Quali applicazioni cliniche poggiano su evidenza robusta (almeno un trial
+#  controllato), e a quale strumento appartengono?"
+#
+# Dimostra la seconda classe definita dell'ontologia, aiaph:HighEvidenceApplication
+# (ontology/aiaphasia-ontology.ttl §1e): non derivata da un'assenza, come
+# UndifferentiatedByAphasiaSubtype (§1b), ma dall'unione di due restrizioni di
+# valore (owl:hasValue) su hasEvidenceLevel. A differenza della classe §1b, questa
+# NON soffre del problema di open-world assumption discusso in §1b e nel file
+# negative-competency-questions.md: un reasoner la inferisce correttamente, perché
+# si basa su valori dichiarati (triple asserite), non su un'assenza — verificato
+# con HermiT: aiaph:HighEvidenceApplication ha esattamente 4 istanze inferite,
+# che coincidono con il risultato di questa stessa query scritta a pattern fisso
+# (così resta eseguibile anche su un triple store senza reasoner attivo; con un
+# reasoner attivo, è equivalente a SELECT ?ca WHERE { ?ca a aiaph:HighEvidenceApplication }).
+#
+# Atteso: 4 applicazioni su 40 (Constant Therapy, iTalkBetter, Big CACTUS/CSLT,
+# terapia conversazionale in VR semi-immersiva) — tutte terapeutiche, nessuna
+# diagnostica o prognostica raggiunge ancora questo livello nel campione mappato.
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+
+SELECT ?nomeStrumento ?livello WHERE {
+  ?ca aiaph:isApplicationOf ?tool ;
+      aiaph:hasEvidenceLevel ?lvl .
+  VALUES ?lvl { aiaph:Level1_SystematicReviewOrRCT aiaph:Level2_ControlledTrial }
+  ?tool aiaph:toolName ?nomeStrumento .
+  ?lvl rdfs:label ?livello .
+  FILTER(lang(?livello) = "it")
+}
+ORDER BY ?nomeStrumento

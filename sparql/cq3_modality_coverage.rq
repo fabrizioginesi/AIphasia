@@ -1,0 +1,15 @@
+# Competency Question 3
+# "Quali modalità comunicative sono indirizzate dagli strumenti mappati, e dove sono le lacune?"
+#
+# Atteso: la produzione orale domina nettamente; la comprensione scritta (alessia)
+# ha copertura zero.
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+
+SELECT ?modalita (COUNT(?ca) AS ?n) WHERE {
+  ?ca aiaph:addressesModality ?mod .
+  ?mod rdfs:label ?modalita .
+  FILTER(lang(?modalita) = "it")
+}
+GROUP BY ?modalita
+ORDER BY DESC(?n)

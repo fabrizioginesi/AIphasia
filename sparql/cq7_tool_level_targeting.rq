@@ -1,0 +1,27 @@
+# Competency Question 7
+# "Quali AITool trattano (anche indirettamente, attraverso le loro ClinicalApplication)
+#  l'afasia di Broca?"
+#
+# Dimostra la query a percorso di proprietà (property path, operatori '/' sequenza e
+# '^' inversione): naviga da AITool a AphasiaType passando per la ClinicalApplication
+# intermedia, senza materializzare esplicitamente nessuna tripla aggiuntiva. È l'equivalente a livello
+# di query della proprietà derivata aiaph:toolTargetsAphasiaType, definita in
+# ontology/aiaphasia-ontology.ttl §9b tramite owl:propertyChainAxiom: un endpoint con
+# reasoner attivo può rispondere alla stessa domanda interrogando direttamente
+# ?tool aiaph:toolTargetsAphasiaType aiaph:BrocaAphasia — qui lo facciamo senza
+# reasoner, con un percorso di proprietà esplicito.
+#
+# Atteso: AphasiaScripts, Careful Whisper (pipeline interpretabile per biomarcatori
+# vocali dell'afasia), Constant Therapy, RehabilitIA, Semi-Immersive VR Therapy,
+# Neural Machine Translation per frasi afasiche, Computerized VNeST, iTalkBetter —
+# tutti gli strumenti la cui ClinicalApplication dichiara BrocaAphasia come target,
+# indipendentemente dal tipo di applicazione (terapeutica, diagnostica...).
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?nomeStrumento WHERE {
+  ?tool ^aiaph:isApplicationOf/aiaph:targetsAphasiaType aiaph:BrocaAphasia .
+  ?tool aiaph:toolName ?nomeStrumento .
+}
+ORDER BY ?nomeStrumento

@@ -1,0 +1,1760 @@
+@prefix aiaph:   <https://w3id.org/aiaphasia#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dul:     <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
+
+dcterms:title a owl:AnnotationProperty .
+dcterms:description a owl:AnnotationProperty .
+dcterms:created a owl:AnnotationProperty .
+dcterms:license a owl:AnnotationProperty .
+
+#################################################################
+# 0. ONTOLOGY HEADER
+#################################################################
+
+aiaph: a owl:Ontology ;
+    dcterms:title "AIAphasia: un'ontologia per gli strumenti di Intelligenza Artificiale nel trattamento clinico dell'afasia"@it ;
+    dcterms:title "AIAphasia: an ontology for Artificial Intelligence tools in the clinical treatment of aphasia"@en ;
+    dcterms:description "Ontologia OWL che formalizza (i) la tassonomia clinico-linguistica dell'afasia (tipi, domini linguistici, modalità comunicative, sintomi, test diagnostici) e (ii) gli strumenti di Intelligenza Artificiale impiegati nella diagnosi, valutazione e riabilitazione dell'afasia, modellando ogni strumento come una o più applicazioni cliniche reificate, corredate da livello di evidenza scientifica e limiti dichiarati."@it ;
+    dcterms:created "2026-09-15"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:comment "NOTA METODOLOGICA SUL PATTERN DI MODELLAZIONE: il nucleo dell'ontologia (aiaph:ClinicalApplication come reificazione n-aria di un uso di aiaph:AITool) segue il pattern Descriptions & Situations (DnS) dell'upper ontology DOLCE-Ultralite (DUL — Ontology Design Patterns portal). Le classi dul: sono riusate per IRI e dichiarate come stub locali in §1c, senza owl:imports dell'intero file DUL, per restare verificabili con un reasoner offline; l'allineamento è quindi documentale (quali classi 'giocano il ruolo' di quali classi DUL), non un'importazione effettiva dell'assiomatica DUL completa."@it ;
+    owl:versionInfo "Progetto universitario: ontologia OWL con allineamento DUL/DnS, property chain inferenziale, domande di competenza positive/negative, vincoli di cardinalità su ClinicalApplication, due classi definite, e una tabella di allineamento esterno verso ICF" .
+
+#################################################################
+# 1. CLASSI DI PRIMO LIVELLO
+#################################################################
+
+aiaph:AphasiaType a owl:Class ;
+    rdfs:label "Tipo di afasia"@it , "Aphasia type"@en ;
+    rdfs:comment "Una sindrome afasica, individuata da un profilo di deficit linguistici. L'ontologia distingue due rami per eziologia — aiaph:PostStrokeAphasia (vascolare, classificata secondo il modello neoclassico di Boston basato su fluenza/comprensione/ripetizione) e aiaph:PrimaryProgressiveAphasia (neurodegenerativa, classificata secondo i criteri di consenso internazionale di Gorno-Tempini et al., 2011) — poiché sono nosograficamente distinte pur condividendo il fenotipo di compromissione linguistica."@it ;
+    rdfs:comment "NOTA EPISTEMOLOGICA: il modello classificatorio categoriale (neoclassico/locazionista) qui adottato per l'afasia post-ictus è quello clinicamente più diffuso, ma è oggetto di critica consolidata in letteratura: non tutti i profili di pazienti reali rientrano nettamente in una singola categoria (esistono forme 'miste' e casi di confine), il modello tratta il linguaggio come funzione isolata quando è interconnesso con memoria di lavoro, controllo esecutivo e cognizione semantica, e non cattura le alterazioni cognitive concomitanti (es. aprassia). Il modello alternativo cognitivo-neuropsicologico (basato su batterie come la PALPA) scompone il linguaggio in moduli di elaborazione discreti invece che in sindromi categoriali; proposte di riclassificazione alternative sono state avanzate anche entro il modello categoriale stesso (es. Ardila, 2010). Questa ontologia adotta il modello categoriale per la sua diffusione clinica e la sua compatibilità con gli strumenti diagnostici IA mappati nel grafo (quasi tutti addestrati per classificare in categorie discrete), ma tratta tale scelta come una decisione di modellazione dichiarata, non come un fatto clinico privo di alternative."@it ;
+    rdfs:seeAlso <https://icd.who.int/browse11/l-m/en#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1281448132> ;
+    aiaph:icd11Code "MA80.0" ;
+    aiaph:icd10cmCode "R47.01" ;
+    aiaph:standardsAlignmentNote "ICD-11 (MA80.0) e ICD-10-CM (R47.01) codificano 'afasia' a livello generale, senza codici distinti per i sottotipi clinici (Broca, Wernicke, ecc.); la sotto-tipizzazione richiede la post-coordinazione con codici di estensione (ICD-11) o rimane extra-nosologica, demandata alla documentazione clinica testuale. Questo è uno dei motivi per cui un'ontologia OWL dedicata, più granulare degli standard di codifica sanitaria, ha valore descrittivo autonomo."@it .
+
+aiaph:LinguisticDomain a owl:Class ;
+    rdfs:label "Dominio linguistico"@it ;
+    rdfs:comment "Uno dei livelli di struttura della competenza linguistica che può essere selettivamente compromesso nell'afasia (fonologico, semantico-lessicale, sintattico-morfologico, pragmatico)."@it .
+
+aiaph:CommunicationModality a owl:Class ;
+    rdfs:label "Modalità comunicativa"@it ;
+    rdfs:comment "Uno dei quattro canali di comunicazione che l'afasia può colpire: produzione orale, comprensione orale, produzione scritta, comprensione scritta."@it .
+
+aiaph:ExtraLinguisticDomain a owl:Class ;
+    rdfs:label "Dominio extra-linguistico"@it ;
+    rdfs:comment "Un'abilità non strettamente linguistica ma frequentemente compromessa come effetto a catena dell'afasia (es. calcolo, sfera psicosociale)."@it .
+
+aiaph:ClinicalSymptom a owl:Class ;
+    rdfs:label "Sintomo clinico"@it ;
+    rdfs:comment "Una manifestazione osservabile del disturbo afasico, riconducibile a uno specifico dominio linguistico."@it .
+
+aiaph:DiagnosticTest a owl:Class ;
+    rdfs:label "Test diagnostico"@it ;
+    rdfs:comment "Uno strumento standardizzato, somministrato da un clinico o neuropsicologo, per identificare e quantificare il deficit afasico."@it .
+
+aiaph:AITool a owl:Class ;
+    rdfs:label "Strumento di Intelligenza Artificiale"@it , "AI tool"@en ;
+    rdfs:comment "Un software, sistema, dispositivo o agente che impiega tecniche di Intelligenza Artificiale (machine learning, NLP, ASR, modelli generativi, ecc.) in un contesto clinico legato all'afasia: l'entità 'opera' che viene poi analizzata attraverso una o più applicazioni cliniche."@it .
+
+aiaph:ClinicalApplication a owl:Class ;
+    rdfs:label "Applicazione clinica"@it ;
+    rdfs:comment "Il pattern di modellazione centrale dell'ontologia: la reificazione di un uso specifico di un AITool su una popolazione/dominio target, con un proprio livello di evidenza e propri limiti dichiarati. Un singolo AITool può generare più ClinicalApplication (ad es. una per la diagnosi, una per la terapia)."@it .
+
+aiaph:TherapeuticApplication a owl:Class ; rdfs:subClassOf aiaph:ClinicalApplication ;
+    rdfs:label "Applicazione terapeutica"@it ;
+    rdfs:comment "Lo strumento è impiegato per trattare/riabilitare una funzione linguistica compromessa."@it .
+aiaph:DiagnosticApplication a owl:Class ; rdfs:subClassOf aiaph:ClinicalApplication ;
+    rdfs:label "Applicazione diagnostica"@it ;
+    rdfs:comment "Lo strumento è impiegato per rilevare, classificare o descrivere il disturbo afasico o le sue sottotipologie."@it .
+aiaph:PrognosticApplication a owl:Class ; rdfs:subClassOf aiaph:ClinicalApplication ;
+    rdfs:label "Applicazione prognostica"@it ;
+    rdfs:comment "Lo strumento predice l'esito futuro (recupero, gravità residua) a partire da dati acuti o precoci, senza intervenire direttamente sul trattamento."@it .
+aiaph:AssistiveApplication a owl:Class ; rdfs:subClassOf aiaph:ClinicalApplication ;
+    rdfs:label "Applicazione assistiva"@it ;
+    rdfs:comment "Lo strumento sostituisce o aumenta la comunicazione residua del paziente (AAC, neuroprotesi) senza necessariamente mirare al recupero della funzione linguistica."@it .
+
+[] a owl:AllDisjointClasses ;
+   owl:members ( aiaph:TherapeuticApplication aiaph:DiagnosticApplication
+                 aiaph:PrognosticApplication aiaph:AssistiveApplication ) .
+
+#################################################################
+# 1d. VINCOLI DI INTEGRITA' SU ClinicalApplication
+#
+# Fino a qui ogni ClinicalApplication è stata disciplinata solo da
+# restrizioni di dominio/codominio (quali proprietà PUO' avere), non da
+# cardinalità (quante ne DEVE avere). Senza un vincolo esplicito, un'istanza
+# priva di livello di evidenza o con due strumenti sorgente diversi sarebbe
+# comunque consistente per il reasoner: non un errore di dati, solo un fatto
+# non vincolato. Le tre restrizioni sotto chiudono questo spazio e sono state
+# verificate per via SPARQL contro le 40 istanze reali prima di essere
+# asserite come vincoli (nessuna viola exactly-1 su isApplicationOf o
+# hasEvidenceLevel, nessuna ha hasLimitation vuoto), cosicché il vincolo
+# descriva un invariante già rispettato dal grafo, non un'aspirazione.
+#################################################################
+
+aiaph:isApplicationOf a owl:FunctionalProperty .
+aiaph:hasEvidenceLevel a owl:FunctionalProperty .
+
+aiaph:ClinicalApplication rdfs:subClassOf
+    [ a owl:Restriction ; owl:onProperty aiaph:isApplicationOf ;
+      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass aiaph:AITool ] ,
+    [ a owl:Restriction ; owl:onProperty aiaph:hasEvidenceLevel ;
+      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass aiaph:EvidenceLevel ] ,
+    [ a owl:Restriction ; owl:onProperty aiaph:hasLimitation ;
+      owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ; owl:onClass aiaph:Limitation ] .
+
+#################################################################
+# 1e. SECONDA CLASSE DEFINITA: evidenza clinica alta, via disgiunzione di
+# valori. A differenza di UndifferentiatedByAphasiaSubtype (definita da
+# un'assenza, §1b), questa è definita da un valore esplicito tra due
+# possibili (owl:unionOf di due owl:hasValue), per mostrare che il pattern
+# "classe definita" non è un trucco isolato ma una tecnica di modellazione
+# riusabile con forme logiche diverse.
+#################################################################
+
+aiaph:HighEvidenceApplication a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            aiaph:ClinicalApplication
+            [ a owl:Class ;
+              owl:unionOf (
+                [ a owl:Restriction ; owl:onProperty aiaph:hasEvidenceLevel ; owl:hasValue aiaph:Level1_SystematicReviewOrRCT ]
+                [ a owl:Restriction ; owl:onProperty aiaph:hasEvidenceLevel ; owl:hasValue aiaph:Level2_ControlledTrial ]
+              )
+            ]
+        )
+    ] ;
+    rdfs:label "Applicazione con evidenza clinica alta"@it ;
+    rdfs:comment "Classe DEFINITA: raccoglie, tramite l'unione di due restrizioni di valore (owl:hasValue), ogni ClinicalApplication il cui hasEvidenceLevel è Livello 1 o Livello 2 — cioè supportata da almeno un trial controllato, non solo da un prototipo o da un caso singolo. Permette di contare quante delle 40 applicazioni poggiano su evidenza robusta senza dover enumerare manualmente le due categorie ogni volta."@it .
+
+aiaph:AITechnique a owl:Class ;
+    rdfs:label "Tecnica di IA"@it ;
+    rdfs:comment "La tecnica computazionale sottostante impiegata da un AITool (es. riconoscimento automatico del parlato, modello linguistico di grande scala, classificatore supervisionato)."@it .
+
+aiaph:EvidenceLevel a owl:Class ;
+    rdfs:label "Livello di evidenza"@it ;
+    rdfs:comment "Una scala a cinque punti che qualifica la robustezza scientifica di una ClinicalApplication, dal prototipo sperimentale alla revisione sistematica/RCT multicentrico."@it .
+
+aiaph:Limitation a owl:Class ;
+    rdfs:label "Limite"@it ;
+    rdfs:comment "Un limite dichiarato e documentato di una ClinicalApplication. Le sottoclassi ortogonali modellano diverse *nature* del limite (dati, governance clinica, generalizzabilità, validità di costrutto, accessibilità, confine nosografico), per trattare lo scarto come dato analitico e non come rumore."@it .
+
+#################################################################
+# 1c. ALLINEAMENTO A DOLCE-ULTRALITE (DUL): PATTERN DESCRIPTIONS & SITUATIONS
+# Le classi dul: sotto sono stub locali (stesso IRI dell'ontologia DUL
+# pubblica sul portale Ontology Design Patterns, non importata per intero)
+# usati per dichiarare esplicitamente a quale "ruolo" ontologico di livello
+# superiore corrisponde ciascuna classe di primo livello di AIphasia. Questo
+# rende interrogabile anche a chi non conosce il dominio clinico la *forma*
+# logica delle relazioni (una Situazione che soddisfa una Descrizione),
+# indipendentemente dal contenuto specifico dell'afasia.
+#################################################################
+
+dul:Situation a owl:Class ;
+    rdfs:label "Situation (DUL, esterna)"@en ;
+    rdfs:comment "Stub locale di dul:Situation. Una configurazione di entità che soddisfa (satisfies) una dul:Description. Qui gioca questo ruolo aiaph:ClinicalApplication: l'uso specifico di uno strumento su un target clinico è la 'situazione' che rende vera una descrizione clinica/metodologica."@en .
+dul:Description a owl:Class ;
+    rdfs:label "Description (DUL, esterna)"@en ;
+    rdfs:comment "Stub locale di dul:Description. Uno schema non-fisico (norma, piano, teoria, protocollo) che una Situation può soddisfare. Nessuna classe di AIphasia è dichiarata equivalente a questa radice: il protocollo clinico/di validazione implicito in ogni ClinicalApplication resta extra-ontologico, citato nelle fonti bibliografiche (aiaph:sourceURL) piuttosto che formalizzato triade per triade."@en .
+dul:Object a owl:Class ;
+    rdfs:label "Object (DUL, esterna)"@en ;
+    rdfs:comment "Stub locale di dul:Object (endurant). Qui gioca questo ruolo aiaph:AITool: un'entità persistente nel tempo che partecipa a una o più Situation (ClinicalApplication) senza esaurirsi in nessuna di esse — lo stesso strumento può generare più applicazioni cliniche."@en .
+dul:Concept a owl:Class ;
+    rdfs:label "Concept (DUL, esterna)"@en ;
+    rdfs:comment "Stub locale di dul:Concept, una categoria socialmente/clinicamente costruita usata per classificare. Qui gioca questo ruolo aiaph:AphasiaType: la sindrome non è un oggetto fisico ma la categoria diagnostica, eziologicamente ramificata (post-ictus / PPA), sotto cui un paziente viene classificato."@en .
+dul:Parameter a owl:Class ;
+    rdfs:label "Parameter (DUL, esterna)"@en ;
+    rdfs:comment "Stub locale di dul:Parameter, una dimensione di variabilità di una Situation. Qui gioca questo ruolo aiaph:EvidenceLevel: non è una proprietà intrinseca dello strumento, ma un parametro di quanto robustamente la specifica ClinicalApplication è stata validata."@en .
+dul:Quality a owl:Class ;
+    rdfs:label "Quality (DUL, esterna)"@en ;
+    rdfs:comment "Stub locale di dul:Quality, un aspetto osservabile/misurabile inerente a un'entità. Qui gioca questo ruolo aiaph:Limitation: ogni sottoclasse ortogonale di Limitation è trattata come qualità costitutiva della ClinicalApplication (un dato analitico da interrogare), non come rumore o eccezione da scartare."@en .
+
+aiaph:ClinicalApplication rdfs:subClassOf dul:Situation .
+aiaph:AITool rdfs:subClassOf dul:Object .
+aiaph:AphasiaType rdfs:subClassOf dul:Concept .
+aiaph:EvidenceLevel rdfs:subClassOf dul:Parameter .
+aiaph:Limitation rdfs:subClassOf dul:Quality .
+
+#################################################################
+# 1b. CLASSE DEFINITA (non asserita): la lacuna di differenziazione per
+# sottotipo di afasia. Non la annotiamo manualmente strumento per strumento:
+# la definiamo tramite una restrizione OWL sulla cardinalità di
+# targetsAphasiaType, cosicché sia il *reasoner*, non un'annotazione umana, a
+# classificare automaticamente ogni ClinicalApplication che tratta "l'afasia"
+# come categoria indifferenziata. È il fulcro formale dell'obiettivo del
+# progetto: rendere interrogabile e quantificabile, non solo osservabile per
+# assenza, la principale lacuna metodologica del campo.
+#################################################################
+aiaph:UndifferentiatedByAphasiaSubtype a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            aiaph:ClinicalApplication
+            [ a owl:Restriction ; owl:onProperty aiaph:targetsAphasiaType ; owl:maxQualifiedCardinality "0"^^xsd:nonNegativeInteger ; owl:onClass aiaph:AphasiaType ]
+        )
+    ] ;
+    rdfs:label "Applicazione non differenziata per sottotipo di afasia"@it ;
+    rdfs:comment "Classe DEFINITA tramite restrizione di cardinalità qualificata, non tramite annotazione manuale: il criterio di appartenenza è quindi formale e univoco, non una categoria a cui si assegna un'istanza per giudizio soggettivo. Sotto la semantica open-world di OWL DL, HermiT non puo' pero' classificare un'istanza qui per sola assenza di una tripla targetsAphasiaType (l'assenza di un'asserzione non prova una cardinalità massima: potrebbe esistere un filler non ancora dichiarato). L'ontologia tratta quindi il catalogo delle 40 ClinicalApplication come deliberatamente chiuso a fini analitici — e' un elenco curato e completo delle fonti reperite, non un campione parziale — e opera questa stessa definizione come query SPARQL a mondo chiuso (FILTER NOT EXISTS, sparql/cq5_undifferentiated_applications.rq), equivalente estensionale della classe DL quando il grafo e' trattato come completo. Nell'analisi empirica cosi' condotta, 27 applicazioni su 40 (67,5%) ricadono in questa classe — la maggioranza — un disallineamento rispetto alla pratica clinica, dove il sottotipo guida la scelta terapeutica (si veda il materiale clinico all'origine di questo progetto)."@it .
+
+aiaph:DifferentiatedByAphasiaSubtype a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf ( aiaph:ClinicalApplication [ owl:complementOf aiaph:UndifferentiatedByAphasiaSubtype ] )
+    ] ;
+    rdfs:label "Applicazione differenziata per sottotipo di afasia"@it ;
+    rdfs:comment "Complemento (ristretto a ClinicalApplication) della classe precedente, per comodità di interrogazione: le ClinicalApplication che dichiarano esplicitamente almeno un sottotipo target."@it .
+
+#################################################################
+# 2. SOTTOCLASSI: TIPI DI AFASIA (da fonte clinica fornita + MSD Manual)
+#################################################################
+
+aiaph:PostStrokeAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:AphasiaType ;
+    rdfs:label "Afasia post-ictus (vascolare)"@it ;
+    rdfs:comment "Afasia ad esordio acuto/improvviso, di eziologia vascolare (ictus ischemico o emorragico) o comunque lesionale acuta (trauma cranico). Classificata secondo il modello neoclassico di Boston (Goodglass & Kaplan) in base a fluenza, comprensione e ripetizione. È il ramo eziologico coperto dalla maggior parte degli strumenti diagnostici e terapeutici del grafo (es. Big CACTUS, Constant Therapy, classificatori ASR-SVM)."@it .
+
+aiaph:PrimaryProgressiveAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:AphasiaType ;
+    rdfs:label "Afasia progressiva primaria (PPA)"@it ;
+    rdfs:comment "Sindrome neurodegenerativa in cui il deterioramento del linguaggio è il disturbo predominante e isolato all'esordio (a differenza della demenza di Alzheimer tipica, dove il deficit di memoria domina). Classificata secondo i criteri di consenso internazionale di Gorno-Tempini et al. (2011, Neurology) in tre varianti canoniche più una categoria di casi atipici/non classificabili emersa da letteratura successiva (Neurology, 2024). Associata a diverse patologie sottostanti dello spettro della degenerazione lobare frontotemporale e, soprattutto nella variante logopenica, alla malattia di Alzheimer."@it .
+
+aiaph:NonFluentAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:PostStrokeAphasia ;
+    rdfs:label "Afasia non fluente"@it ;
+    rdfs:comment "Eloquio stentato, lento, faticoso, con ridotta produzione di parole al minuto; lesione tipicamente frontale/frontoparietale sinistra."@it .
+
+aiaph:FluentAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:PostStrokeAphasia ;
+    rdfs:label "Afasia fluente"@it ;
+    rdfs:comment "Eloquio scorrevole o iper-fluente ma spesso privo di significato logico, con parafasie e neologismi; lesione tipicamente temporale/temporoparietale sinistra."@it .
+
+aiaph:BrocaAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:NonFluentAphasia ;
+    rdfs:label "Afasia di Broca"@it ;
+    rdfs:comment "Difficoltà marcata nella produzione verbale e nella grammatica, articolazione compromessa, comprensione generalmente integra. Lesione nell'area di Broca, lobo frontale sinistro. Frequenti agrafia e compromissione della lettura ad alta voce."@it .
+
+aiaph:TranscorticalMotorAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:NonFluentAphasia ;
+    rdfs:label "Afasia transcorticale motoria"@it ;
+    rdfs:comment "Simile all'afasia di Broca per la scarsa fluenza, ma con capacità di ripetizione conservata."@it .
+
+aiaph:GlobalAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:NonFluentAphasia , aiaph:FluentAphasia ;
+    rdfs:label "Afasia globale"@it ;
+    rdfs:comment "La forma più grave: compromissione totale o profonda sia della produzione sia della comprensione del linguaggio."@it .
+
+aiaph:MixedTranscorticalAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:NonFluentAphasia ;
+    rdfs:label "Afasia transcorticale mista (da isolamento)"@it ;
+    rdfs:comment "L'ottavo sottotipo del modello neoclassico di Boston, spesso omesso nelle trattazioni sintetiche. Simile all'afasia globale per la grave compromissione di produzione e comprensione, ma con la ripetizione paradossalmente conservata o addirittura ecolalica (il paziente ripete ciò che sente senza comprenderlo). Deriva da lesioni che 'isolano' l'area perisilviana del linguaggio (Broca-Wernicke-fascicolo arcuato, tipicamente risparmiate) dal resto della corteccia, da cui il nome alternativo 'sindrome da isolamento'."@it .
+
+aiaph:WernickeAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:FluentAphasia ;
+    rdfs:label "Afasia di Wernicke"@it ;
+    rdfs:comment "Grave deficit di comprensione del linguaggio parlato e scritto; eloquio fluente ma con contenuto incomprensibile o confuso (parafasie, neologismi). Lesione nella parte posteriore del lobo temporale sinistro (area di Wernicke). Frequente associazione con alessia."@it .
+
+aiaph:ConductionAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:FluentAphasia ;
+    rdfs:label "Afasia di conduzione"@it ;
+    rdfs:comment "Eloquio fluente e buona comprensione, ma deficit grave nella ripetizione di parole o frasi."@it .
+
+aiaph:TranscorticalSensoryAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:FluentAphasia ;
+    rdfs:label "Afasia transcorticale sensoriale"@it ;
+    rdfs:comment "Simile all'afasia di Wernicke per i problemi di comprensione e il linguaggio fluente, ma con ripetizione intatta."@it .
+
+aiaph:AnomicAphasia a owl:Class ;
+    rdfs:subClassOf aiaph:FluentAphasia ;
+    rdfs:label "Afasia anomica (amnestica)"@it ;
+    rdfs:comment "Forma più lieve: il disturbo principale è l'anomia, la difficoltà persistente a trovare i nomi corretti, a fronte di fluenza e comprensione quasi normali."@it .
+
+# Nota: GlobalAphasia è intenzionalmente sotto-classe sia di NonFluent che di Fluent
+# (compromissione di entrambi i poli), quindi le classi disgiunte riguardano solo
+# le sindromi "pure" non-globali, per evitare inconsistenza logica.
+[] a owl:AllDisjointClasses ;
+   owl:members ( aiaph:BrocaAphasia aiaph:TranscorticalMotorAphasia aiaph:WernickeAphasia
+                 aiaph:ConductionAphasia aiaph:TranscorticalSensoryAphasia aiaph:AnomicAphasia
+                 aiaph:MixedTranscorticalAphasia ) .
+
+#################################################################
+# 2b. AFASIA PROGRESSIVA PRIMARIA: le tre varianti canoniche (Gorno-Tempini et al.,
+# 2011, Neurology 76:1006-1014) più una categoria per i casi che non soddisfano
+# nettamente i criteri di nessuna delle tre (Utianski et al./Botha et al., Neurology
+# 2024, sul sottogruppo "PPA lacking core features of nonfluent and semantic
+# variants": pattern pure-lvPPA, Wernicke-like, anomic-like, TCSA-like).
+#################################################################
+
+aiaph:SemanticVariantPPA a owl:Class ;
+    rdfs:subClassOf aiaph:PrimaryProgressiveAphasia ;
+    rdfs:label "Variante semantica (svPPA)"@it ;
+    rdfs:comment "Perdita progressiva della conoscenza semantica (significato di parole, oggetti, persone), con eloquio fluente ma vuoto di contenuto e anomia severa; comprensione di parole singole compromessa. Associata tipicamente ad atrofia del lobo temporale anteriore, prevalentemente sinistro. Nota anche come 'demenza semantica'."@it .
+
+aiaph:NonfluentAgrammaticVariantPPA a owl:Class ;
+    rdfs:subClassOf aiaph:PrimaryProgressiveAphasia ;
+    rdfs:label "Variante non-fluente/agrammatica (nfvPPA)"@it ;
+    rdfs:comment "Eloquio faticoso, agrammatico, con errori di programmazione motoria dell'articolazione (aprassia del linguaggio); comprensione di frasi sintatticamente complesse compromessa, comprensione di singole parole relativamente preservata. Associata tipicamente ad atrofia fronto-insulare sinistra."@it .
+
+aiaph:LogopenicVariantPPA a owl:Class ;
+    rdfs:subClassOf aiaph:PrimaryProgressiveAphasia ;
+    rdfs:label "Variante logopenica (lvPPA)"@it ;
+    rdfs:comment "Eloquio rallentato da frequenti pause per ricerca della parola (anomia), con deficit di ripetizione di frasi e parafasie fonologiche; grammatica e comprensione di parole singole relativamente preservate. Associata tipicamente ad atrofia temporo-parietale sinistra e, a livello patologico, è la variante di PPA più frequentemente legata alla malattia di Alzheimer sottostante piuttosto che alla degenerazione lobare frontotemporale."@it .
+
+aiaph:AtypicalOrUnclassifiedPPA a owl:Class ;
+    rdfs:subClassOf aiaph:PrimaryProgressiveAphasia ;
+    rdfs:label "PPA atipica o non classificabile"@it ;
+    rdfs:comment "Categoria per i casi che non soddisfano nettamente i criteri di consenso 2011 per nessuna delle tre varianti canoniche. La letteratura più recente (Neurology, 2024) propone quattro sotto-pattern su base di ripetizione/comprensione: pure-lvPPA (ripetizione scarsa, comprensione accettabile), Wernicke-like (entrambe scarse), anomic-like (entrambe accettabili), TCSA-like (ripetizione accettabile, comprensione scarsa) — nomi scelti per analogia con le sindromi post-ictus corrispondenti, pur trattandosi di un'eziologia neurodegenerativa e non vascolare. Include anche i casi con profilo 'misto' semantico-logopenico descritti da Mazzeo et al. (2024)."@it .
+
+[] a owl:AllDisjointClasses ;
+   owl:members ( aiaph:SemanticVariantPPA aiaph:NonfluentAgrammaticVariantPPA
+                 aiaph:LogopenicVariantPPA aiaph:AtypicalOrUnclassifiedPPA ) .
+
+#################################################################
+# 2c. PUNNING ESPLICITO: le sindromi foglia (post-ictus + PPA) sono sia Classi
+#     (gerarchia clinica) sia Individui nominati (usate come valori di
+#     targetsAphasiaType). OWL2 DL lo consente; lo rendiamo esplicito per
+#     chiarezza e per buona pratica.
+#################################################################
+aiaph:BrocaAphasia a owl:NamedIndividual .
+aiaph:TranscorticalMotorAphasia a owl:NamedIndividual .
+aiaph:GlobalAphasia a owl:NamedIndividual .
+aiaph:MixedTranscorticalAphasia a owl:NamedIndividual .
+aiaph:WernickeAphasia a owl:NamedIndividual .
+aiaph:ConductionAphasia a owl:NamedIndividual .
+aiaph:TranscorticalSensoryAphasia a owl:NamedIndividual .
+aiaph:AnomicAphasia a owl:NamedIndividual .
+aiaph:SemanticVariantPPA a owl:NamedIndividual .
+aiaph:NonfluentAgrammaticVariantPPA a owl:NamedIndividual .
+aiaph:LogopenicVariantPPA a owl:NamedIndividual .
+aiaph:AtypicalOrUnclassifiedPPA a owl:NamedIndividual .
+
+#################################################################
+# 3. DOMINI LINGUISTICI, MODALITA', DOMINI EXTRA-LINGUISTICI
+#################################################################
+
+aiaph:PhonologicalDomain a owl:Class ; rdfs:subClassOf aiaph:LinguisticDomain ;
+    rdfs:label "Dominio fonologico"@it ;
+    rdfs:comment "Riguarda i suoni delle parole: scambio/confusione di suoni, inversione di sillabe."@it .
+
+aiaph:SemanticLexicalDomain a owl:Class ; rdfs:subClassOf aiaph:LinguisticDomain ;
+    rdfs:label "Dominio semantico-lessicale"@it ;
+    rdfs:comment "Riguarda il significato e la scelta delle parole: anomia, sostituzione di vocaboli."@it .
+
+aiaph:SyntacticMorphologicalDomain a owl:Class ; rdfs:subClassOf aiaph:LinguisticDomain ;
+    rdfs:label "Dominio sintattico-morfologico"@it ;
+    rdfs:comment "Riguarda le regole grammaticali e la costruzione delle frasi: agrammatismo, paragrammatismo."@it .
+
+aiaph:PragmaticDomain a owl:Class ; rdfs:subClassOf aiaph:LinguisticDomain ;
+    rdfs:label "Dominio pragmatico"@it ;
+    rdfs:comment "Riguarda l'uso del linguaggio nel contesto sociale: turni di parola, sottintesi, ironia."@it .
+
+aiaph:OralProduction a owl:Class ; rdfs:subClassOf aiaph:CommunicationModality ;
+    rdfs:label "Produzione orale"@it ;
+    aiaph:icfCode "b1671" ; aiaph:icfLabel "Funzioni di espressione del linguaggio (ICF, componente Funzioni corporee)"@it .
+aiaph:OralComprehension a owl:Class ; rdfs:subClassOf aiaph:CommunicationModality ;
+    rdfs:label "Comprensione orale"@it ;
+    aiaph:icfCode "b1670" ; aiaph:icfLabel "Funzioni di ricezione del linguaggio (ICF, componente Funzioni corporee)"@it .
+aiaph:WrittenProduction a owl:Class ; rdfs:subClassOf aiaph:CommunicationModality ;
+    rdfs:label "Produzione scritta (Agrafia)"@it ;
+    aiaph:icfCode "d345" ; aiaph:icfLabel "Scrivere messaggi (ICF, componente Attività e partecipazione)"@it .
+aiaph:WrittenComprehension a owl:Class ; rdfs:subClassOf aiaph:CommunicationModality ;
+    rdfs:label "Comprensione scritta (Alessia)"@it ;
+    aiaph:icfCode "d325" ; aiaph:icfLabel "Ricevere messaggi scritti (ICF, componente Attività e partecipazione)"@it .
+
+aiaph:Acalculia a owl:Class ; rdfs:subClassOf aiaph:ExtraLinguisticDomain ;
+    rdfs:label "Acalculia"@it ;
+    rdfs:comment "Difficoltà a fare calcoli mentali, riconoscere i numeri, gestire il denaro."@it ;
+    aiaph:icfCode "b172" ; aiaph:icfLabel "Funzioni di calcolo (ICF, componente Funzioni corporee)"@it .
+aiaph:PsychosocialImpact a owl:Class ; rdfs:subClassOf aiaph:ExtraLinguisticDomain ;
+    rdfs:label "Impatto psicosociale"@it ;
+    rdfs:comment "Isolamento, frustrazione, alterazioni del tono dell'umore legate alla perdita dei ruoli familiari/lavorativi."@it ;
+    aiaph:icfCode "d7" ; aiaph:icfLabel "Interazioni e relazioni interpersonali (ICF, componente Attività e partecipazione)"@it .
+
+aiaph:associatedExtraLinguisticDomain a owl:ObjectProperty ;
+    rdfs:domain aiaph:AphasiaType ; rdfs:range aiaph:ExtraLinguisticDomain ;
+    rdfs:label "ha dominio extra-linguistico associato"@it ;
+    rdfs:comment "Collega AphasiaType a ExtraLinguisticDomain, finora privo di qualsiasi tripla entrante: senza questa proprietà Acalculia e PsychosocialImpact restavano due nodi isolati nel grafo, raggiungibili solo tramite rdfs:subClassOf. Asserita identicamente su tutte e 12 le sindromi foglia (già punnate come individui in §2c/§2b), non su aiaph:AphasiaType come classe, perché il dominio richiede un'istanza e perché la fonte clinica originaria (materiale di origine del progetto) descrive questi effetti a catena come concomitanti generali dell'afasia, senza differenziarli per sindrome: l'identica asserzione su tutte e 12 rende visibile questa non-differenziazione invece di nasconderla dietro un'asserzione a livello di classe."@it .
+
+aiaph:BrocaAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:TranscorticalMotorAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:GlobalAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:MixedTranscorticalAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:WernickeAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:ConductionAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:TranscorticalSensoryAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:AnomicAphasia aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:SemanticVariantPPA aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:NonfluentAgrammaticVariantPPA aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:LogopenicVariantPPA aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+aiaph:AtypicalOrUnclassifiedPPA aiaph:associatedExtraLinguisticDomain aiaph:Acalculia , aiaph:PsychosocialImpact .
+
+#################################################################
+# 3b. ALLINEAMENTO ESTERNO (ICF) — TABELLA DI CORRISPONDENZA
+#
+# Finora l'unico ancoraggio a una classificazione esterna erano i codici
+# ICD-11/ICD-10-CM sulla sola classe aiaph:AphasiaType (§1), a livello di
+# sindrome. Qui l'allineamento scende a livello di singolo dominio/modalità,
+# verso la classificazione ICF (International Classification of
+# Functioning, Disability and Health) dell'OMS, tramite una tabella di
+# corrispondenza esplicita tra le classi locali e i codici ICF esterni.
+# aiaph:icfCode/aiaph:icfLabel sopra sono le singole celle della tabella;
+# qui sotto la tabella stessa, in forma testuale compatta, con la stessa
+# cautela epistemica già usata per ICD-11/ICD-10-CM in §1 (standardsAlignmentNote):
+# un allineamento dichiarato e verificabile, non un'importazione dell'ICF.
+#################################################################
+
+aiaph:icfCode a owl:AnnotationProperty ; rdfs:label "codice ICF"@it .
+aiaph:icfLabel a owl:AnnotationProperty ; rdfs:label "etichetta ICF"@it .
+aiaph:icfAlignmentTable a owl:AnnotationProperty ; rdfs:label "tabella di allineamento ICF"@it .
+
+aiaph: aiaph:icfAlignmentTable
+    "TABELLA DI CORRISPONDENZA AIAphasia ⊇ ICF — ogni riga 'classe AIAphasia -> codice ICF' è anche asserita come coppia icfCode/icfLabel sulla classe stessa, qui raccolta in un unico punto per leggibilità: OralComprehension->b1670 (Funzioni di ricezione del linguaggio); OralProduction->b1671 (Funzioni di espressione del linguaggio); WrittenComprehension->d325 (Ricevere messaggi scritti); WrittenProduction->d345 (Scrivere messaggi); Acalculia->b172 (Funzioni di calcolo); PsychosocialImpact->d7 (Interazioni e relazioni interpersonali). Nota di cautela: l'ICF descrive funzionamento e disabilità in generale, non è specifico per l'afasia (a differenza di ICD-11/ICD-10-CM già usati in §1 per aiaph:AphasiaType), quindi questo allineamento è utile per situare AIAphasia rispetto a un framework internazionale più ampio, non per sostituire la tassonomia clinica propria dell'ontologia."@it .
+
+#################################################################
+# 4. SINTOMI CLINICI
+#################################################################
+
+aiaph:Paraphasia a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Parafasia"@it ; rdfs:comment "Sostituzione di suoni o parole."@it .
+aiaph:Neologism a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Neologismo"@it .
+aiaph:Agrammatism a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Agrammatismo"@it ; rdfs:comment "Eloquio 'telegrafico': eliminazione di verbi coniugati, articoli, preposizioni."@it .
+aiaph:Paragrammatism a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Paragrammatismo"@it ; rdfs:comment "Frasi lunghe e fluide ma strutturate male e senza senso."@it .
+aiaph:Anomia a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Anomia"@it ; rdfs:comment "Difficoltà a trovare la parola giusta pur sapendo cosa si vuole dire."@it .
+aiaph:Circumlocution a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Circonlocuzione"@it .
+aiaph:Alexia a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Alessia (dislessia acquisita)"@it .
+aiaph:Agraphia a owl:Class ; rdfs:subClassOf aiaph:ClinicalSymptom ;
+    rdfs:label "Agrafia"@it .
+
+aiaph:manifestsSymptom a owl:ObjectProperty ;
+    rdfs:domain aiaph:AphasiaType ; rdfs:range aiaph:ClinicalSymptom ;
+    rdfs:label "manifesta sintomo"@it .
+
+aiaph:affectsDomain a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalSymptom ; rdfs:range aiaph:LinguisticDomain ;
+    rdfs:label "colpisce dominio"@it .
+
+aiaph:BrocaAphasia aiaph:manifestsSymptom aiaph:Agrammatism , aiaph:Agraphia .
+aiaph:WernickeAphasia aiaph:manifestsSymptom aiaph:Paraphasia , aiaph:Neologism , aiaph:Alexia .
+aiaph:ConductionAphasia aiaph:manifestsSymptom aiaph:Paraphasia .
+aiaph:AnomicAphasia aiaph:manifestsSymptom aiaph:Anomia , aiaph:Circumlocution .
+aiaph:GlobalAphasia aiaph:manifestsSymptom aiaph:Agrammatism , aiaph:Alexia , aiaph:Agraphia .
+
+aiaph:Agrammatism aiaph:affectsDomain aiaph:SyntacticMorphologicalDomain .
+aiaph:Paragrammatism aiaph:affectsDomain aiaph:SyntacticMorphologicalDomain .
+aiaph:Anomia aiaph:affectsDomain aiaph:SemanticLexicalDomain .
+aiaph:Circumlocution aiaph:affectsDomain aiaph:SemanticLexicalDomain .
+aiaph:Paraphasia aiaph:affectsDomain aiaph:PhonologicalDomain , aiaph:SemanticLexicalDomain .
+aiaph:Neologism aiaph:affectsDomain aiaph:PhonologicalDomain .
+aiaph:Alexia aiaph:affectsDomain aiaph:SemanticLexicalDomain .
+aiaph:Agraphia aiaph:affectsDomain aiaph:SyntacticMorphologicalDomain .
+
+#################################################################
+# 4b. CO-OCCORRENZA TRA SINTOMI (proprietà simmetrica)
+#
+# manifestsSymptom e affectsDomain collegano i sintomi "verticalmente"
+# (al tipo di afasia sopra, al dominio sotto), ma non dicono nulla sul
+# fatto che certi sintomi tendano a presentarsi insieme nello stesso
+# quadro clinico — un'informazione esplicita nella fonte clinica
+# originaria (parafasie E neologismi nel linguaggio fluente di Wernicke;
+# agrammatismo E agrafia nell'afasia di Broca; anomia E circonlocuzione
+# come compenso). coOccursWithSymptom rende questo "orizzontale" esplicito
+# e interrogabile, invece di lasciarlo implicito nel fatto che entrambi i
+# sintomi compaiano sotto lo stesso manifestsSymptom. Dichiarata simmetrica:
+# un reasoner infierisce la direzione opposta da una sola asserzione.
+#################################################################
+
+aiaph:coOccursWithSymptom a owl:ObjectProperty , owl:SymmetricProperty ;
+    rdfs:domain aiaph:ClinicalSymptom ; rdfs:range aiaph:ClinicalSymptom ;
+    rdfs:label "co-occorre con il sintomo"@it ;
+    rdfs:comment "Simmetrica: se A coOccursWithSymptom B, un reasoner inferisce B coOccursWithSymptom A senza bisogno di asserire entrambe le direzioni a mano."@it .
+
+aiaph:Paraphasia aiaph:coOccursWithSymptom aiaph:Neologism .
+aiaph:Anomia aiaph:coOccursWithSymptom aiaph:Circumlocution .
+aiaph:Agrammatism aiaph:coOccursWithSymptom aiaph:Agraphia .
+
+#################################################################
+# 5. TEST DIAGNOSTICI
+#################################################################
+
+aiaph:assessesModality a owl:ObjectProperty ;
+    rdfs:domain aiaph:DiagnosticTest ; rdfs:range aiaph:CommunicationModality ;
+    rdfs:label "valuta la modalità"@it .
+
+aiaph:detectsSymptom a owl:ObjectProperty ;
+    rdfs:domain aiaph:DiagnosticTest ; rdfs:range aiaph:ClinicalSymptom ;
+    rdfs:label "rileva il sintomo"@it .
+
+aiaph:BostonDiagnosticAphasiaExamination a aiaph:DiagnosticTest ;
+    rdfs:label "Boston Diagnostic Aphasia Examination (BDAE)"@it ;
+    aiaph:assessesModality aiaph:OralProduction , aiaph:OralComprehension , aiaph:WrittenProduction , aiaph:WrittenComprehension ;
+    aiaph:detectsSymptom aiaph:Paraphasia , aiaph:Agrammatism , aiaph:Anomia .
+aiaph:WesternAphasiaBattery a aiaph:DiagnosticTest ;
+    rdfs:label "Western Aphasia Battery (WAB)"@it ;
+    aiaph:assessesModality aiaph:OralProduction , aiaph:OralComprehension ;
+    aiaph:detectsSymptom aiaph:Paraphasia , aiaph:Agrammatism , aiaph:Anomia .
+aiaph:BostonNamingTest a aiaph:DiagnosticTest ;
+    rdfs:label "Boston Naming Test (BNT)"@it ;
+    rdfs:comment "Valuta la denominazione; usato come riferimento in Edmonds et al. per la validazione del VNeST."@it ;
+    aiaph:assessesModality aiaph:OralProduction ;
+    aiaph:detectsSymptom aiaph:Anomia , aiaph:Circumlocution .
+aiaph:TokenTest a aiaph:DiagnosticTest ;
+    rdfs:label "Token Test"@it ;
+    aiaph:assessesModality aiaph:OralComprehension .
+aiaph:ActionNamingTest a aiaph:DiagnosticTest ;
+    rdfs:label "Action Naming Test"@it ;
+    aiaph:assessesModality aiaph:OralProduction ;
+    aiaph:detectsSymptom aiaph:Anomia .
+
+#################################################################
+# 6. TECNICHE DI IA (individui)
+#
+# aiaph:processesModality collega ogni tecnica alla modalità comunicativa
+# che tratta effettivamente in ingresso o in uscita, cosicché una tecnica
+# non resti un'etichetta isolata ma si agganci allo stesso sottografo di
+# modalità/domini già usato per le ClinicalApplication. Lasciata
+# deliberatamente assente per le tecniche realmente modalità-agnostiche
+# (classificatori/regressori generici su feature tabellari o di imaging):
+# collegarle avrebbe significato inventare una precisione che la fonte
+# non dà, lo stesso principio di onestà già adottato altrove nel grafo.
+#################################################################
+
+aiaph:processesModality a owl:ObjectProperty ;
+    rdfs:domain aiaph:AITechnique ; rdfs:range aiaph:CommunicationModality ;
+    rdfs:label "elabora la modalità"@it .
+
+aiaph:AdaptiveLearningAlgorithm a aiaph:AITechnique ;
+    rdfs:label "Algoritmo di apprendimento adattivo"@it .
+aiaph:AutomaticSpeechRecognition a aiaph:AITechnique ;
+    rdfs:label "Riconoscimento automatico del parlato (ASR)"@it ;
+    aiaph:processesModality aiaph:OralProduction .
+aiaph:NaturalLanguageProcessing a aiaph:AITechnique ;
+    rdfs:label "Elaborazione del linguaggio naturale (NLP)"@it ;
+    aiaph:processesModality aiaph:WrittenProduction .
+aiaph:LargeLanguageModelGeneration a aiaph:AITechnique ;
+    rdfs:label "Generazione tramite modello linguistico di grande scala (LLM)"@it ;
+    aiaph:processesModality aiaph:OralProduction , aiaph:WrittenProduction .
+aiaph:DeepLearningClassifier a aiaph:AITechnique ;
+    rdfs:label "Classificatore basato su deep learning"@it .
+aiaph:SupportVectorMachineClassifier a aiaph:AITechnique ;
+    rdfs:label "Classificatore Support Vector Machine (SVM)"@it .
+aiaph:EmbodiedConversationalAvatar a aiaph:AITechnique ;
+    rdfs:label "Avatar/agente conversazionale incarnato"@it ;
+    aiaph:processesModality aiaph:OralComprehension , aiaph:OralProduction .
+aiaph:VirtualRealityEnvironment a aiaph:AITechnique ;
+    rdfs:label "Ambiente di realtà virtuale"@it ;
+    aiaph:processesModality aiaph:OralComprehension , aiaph:OralProduction .
+aiaph:IntracorticalBCI a aiaph:AITechnique ;
+    rdfs:label "Interfaccia cervello-computer intracorticale"@it ;
+    aiaph:processesModality aiaph:OralProduction .
+aiaph:RealTimeUtteranceVerification a aiaph:AITechnique ;
+    rdfs:label "Verifica automatica dell'enunciato in tempo reale"@it ;
+    aiaph:processesModality aiaph:OralProduction .
+aiaph:SupportVectorRegression a aiaph:AITechnique ;
+    rdfs:label "Regressione Support Vector (SVR)"@it .
+aiaph:RandomForestRegression a aiaph:AITechnique ;
+    rdfs:label "Regressione Random Forest"@it .
+aiaph:NonInvasiveEEGBCI a aiaph:AITechnique ;
+    rdfs:label "Interfaccia cervello-computer EEG non invasiva"@it ;
+    aiaph:processesModality aiaph:OralProduction .
+aiaph:MultimodalNeuroimagingML a aiaph:AITechnique ;
+    rdfs:label "Machine learning multimodale su neuroimmagini"@it .
+
+#################################################################
+# 7. LIVELLI DI EVIDENZA (scala a 5 punti, individui)
+#################################################################
+
+aiaph:Level1_SystematicReviewOrRCT a aiaph:EvidenceLevel ;
+    rdfs:label "Livello 1 - Revisione sistematica / RCT multicentrico"@it ;
+    aiaph:evidenceScore 5 .
+aiaph:Level2_ControlledTrial a aiaph:EvidenceLevel ;
+    rdfs:label "Livello 2 - Trial controllato/randomizzato singolo centro"@it ;
+    aiaph:evidenceScore 4 .
+aiaph:Level3_PilotOrSingleCase a aiaph:EvidenceLevel ;
+    rdfs:label "Livello 3 - Studio pilota / caso singolo clinico"@it ;
+    aiaph:evidenceScore 3 .
+aiaph:Level4_ExperimentalPrototype a aiaph:EvidenceLevel ;
+    rdfs:label "Livello 4 - Prototipo sperimentale / proof-of-concept"@it ;
+    aiaph:evidenceScore 2 .
+aiaph:Level5_InformalClinicalUse a aiaph:EvidenceLevel ;
+    rdfs:label "Livello 5 - Uso clinico informale / opinione di esperti"@it ;
+    aiaph:evidenceScore 1 .
+
+[] a owl:AllDifferent ;
+   owl:distinctMembers ( aiaph:Level1_SystematicReviewOrRCT aiaph:Level2_ControlledTrial
+                          aiaph:Level3_PilotOrSingleCase aiaph:Level4_ExperimentalPrototype
+                          aiaph:Level5_InformalClinicalUse ) .
+
+#################################################################
+# 8. CATEGORIE DI LIMITE (sottoclassi ortogonali di Limitation)
+#################################################################
+
+aiaph:DataLimitation a owl:Class ; rdfs:subClassOf aiaph:Limitation ;
+    rdfs:label "Limite legato ai dati"@it ;
+    rdfs:comment "Scarsità o bias nei dati di addestramento (lingue, accenti, tipi di afasia sotto-rappresentati)."@it .
+aiaph:ClinicalGovernanceLimitation a owl:Class ; rdfs:subClassOf aiaph:Limitation ;
+    rdfs:label "Limite di governance clinica"@it ;
+    rdfs:comment "Necessità di supervisione del clinico; rischio che lo strumento sia usato senza il controllo umano previsto dal disegno originario."@it .
+aiaph:GeneralizabilityLimitation a owl:Class ; rdfs:subClassOf aiaph:Limitation ;
+    rdfs:label "Limite di generalizzabilità"@it ;
+    rdfs:comment "Campioni piccoli, monocentrici o singolo-caso; risultati non ancora estendibili alla popolazione generale di persone con afasia."@it .
+aiaph:ConstructValidityLimitation a owl:Class ; rdfs:subClassOf aiaph:Limitation ;
+    rdfs:label "Limite di validità di costrutto"@it ;
+    rdfs:comment "Lo strumento non misura in modo affidabile ciò che promette di misurare (es. errori di trascrizione ASR che si propagano alle feature linguistiche)."@it .
+aiaph:AccessibilityLimitation a owl:Class ; rdfs:subClassOf aiaph:Limitation ;
+    rdfs:label "Limite di accessibilità"@it ;
+    rdfs:comment "Barriere di alfabetizzazione digitale, costo, disponibilità tecnologica per il paziente."@it .
+aiaph:NosologicalBoundaryLimitation a owl:Class ; rdfs:subClassOf aiaph:Limitation ;
+    rdfs:label "Limite di confine nosografico"@it ;
+    rdfs:comment "Lo strumento è sviluppato per un disturbo comunicativo adiacente ma nosograficamente distinto dall'afasia (es. anartria/disartria motoria), e viene qui incluso per la sua rilevanza analitica ai confini della categoria."@it .
+
+aiaph:limitationNote rdfs:label "nota sul limite"@it .
+
+#################################################################
+# 9. PROPRIETA' OGGETTO PRINCIPALI (dominio AITool / ClinicalApplication)
+#################################################################
+
+aiaph:isApplicationOf a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:AITool ;
+    rdfs:label "è applicazione di"@it .
+
+aiaph:employsTechnique a owl:ObjectProperty ;
+    rdfs:domain aiaph:AITool ; rdfs:range aiaph:AITechnique ;
+    rdfs:label "impiega tecnica"@it .
+
+aiaph:targetsAphasiaType a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:AphasiaType ;
+    rdfs:label "ha come target il tipo di afasia"@it .
+
+aiaph:addressesLinguisticDomain a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:LinguisticDomain ;
+    rdfs:label "indirizza il dominio linguistico"@it .
+
+aiaph:addressesModality a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:CommunicationModality ;
+    rdfs:label "indirizza la modalità comunicativa"@it .
+
+aiaph:hasEvidenceLevel a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:EvidenceLevel ;
+    rdfs:label "ha livello di evidenza"@it .
+
+aiaph:hasLimitation a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:Limitation ;
+    rdfs:label "ha limite"@it .
+
+aiaph:evaluatedByTest a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:DiagnosticTest ;
+    rdfs:label "valutato tramite test"@it .
+
+#################################################################
+# 9b. PROPRIETA' INVERSA E PROPERTY CHAIN (navigazione diretta
+# AITool -> AphasiaType attraverso la cerniera reificata)
+#
+# aiaph:ClinicalApplication reifica l'uso di uno strumento, quindi lo
+# strumento e il tipo di afasia che tratta non sono mai connessi da una
+# singola tripla, ma solo attraverso l'applicazione intermedia. Questo e'
+# corretto dal punto di vista della modellazione (lo stesso AITool puo'
+# generare applicazioni con target diversi), ma rende scomoda una domanda
+# frequente ("quali strumenti trattano l'afasia di Broca?") sia per un
+# reasoner sia per una query SPARQL a pattern fisso. Usando query a
+# percorso di proprieta' (property path, operatori / e ^), introduciamo:
+# (i) l'inversa dichiarata di isApplicationOf, e (ii) una proprieta' derivata definita
+# come catena di proprieta' (owl:propertyChainAxiom), cosicche' il
+# reasoner stesso possa materializzare il collegamento diretto, senza che
+# nessuna tripla aiaph:toolTargetsAphasiaType sia asserita a mano.
+#################################################################
+
+aiaph:hasClinicalApplication a owl:ObjectProperty ;
+    owl:inverseOf aiaph:isApplicationOf ;
+    rdfs:domain aiaph:AITool ; rdfs:range aiaph:ClinicalApplication ;
+    rdfs:label "ha applicazione clinica"@it .
+
+aiaph:toolTargetsAphasiaType a owl:ObjectProperty ;
+    rdfs:domain aiaph:AITool ; rdfs:range aiaph:AphasiaType ;
+    owl:propertyChainAxiom ( aiaph:hasClinicalApplication aiaph:targetsAphasiaType ) ;
+    rdfs:label "lo strumento ha come target (indirettamente) il tipo di afasia"@it ;
+    rdfs:comment "Proprieta' derivata, non asserita: un reasoner la infere componendo hasClinicalApplication (inversa di isApplicationOf) con targetsAphasiaType. Permette di interrogare direttamente 'quali AITool trattano il sottotipo X' senza passare esplicitamente per la ClinicalApplication intermedia, pur mantenendo quest'ultima come unico punto dove il fatto e' davvero asserito. L'equivalente a livello di query, utilizzabile anche senza reasoner attivo, e' il property path SPARQL ^aiaph:isApplicationOf/aiaph:targetsAphasiaType (si veda sparql/cq7_tool_level_targeting.rq)."@it .
+
+#################################################################
+# 10. PROPRIETA' DATI PRINCIPALI
+#################################################################
+
+aiaph:toolName a owl:AnnotationProperty .
+aiaph:developer a owl:AnnotationProperty .
+aiaph:releaseYear a owl:DatatypeProperty ; rdfs:domain aiaph:AITool ; rdfs:range xsd:integer .
+aiaph:toolDescription a owl:AnnotationProperty .
+aiaph:sourceURL a owl:AnnotationProperty .
+aiaph:icd11Code a owl:AnnotationProperty .
+aiaph:icd10cmCode a owl:AnnotationProperty .
+aiaph:standardsAlignmentNote a owl:AnnotationProperty .
+aiaph:applicationDescription a owl:AnnotationProperty .
+aiaph:evidenceScore a owl:DatatypeProperty ; rdfs:domain aiaph:EvidenceLevel ; rdfs:range xsd:integer .
+aiaph:reportedMetric a owl:AnnotationProperty ;
+    rdfs:comment "Una metrica quantitativa riportata in letteratura per questa applicazione (es. accuratezza, WER, dimensione campione), come stringa libera per preservarne il contesto."@it .
+aiaph:limitationNote a owl:AnnotationProperty .
+
+#################################################################
+# 11. INDIVIDUI: AITool + ClinicalApplication (16 casi di studio)
+#################################################################
+
+### 1. Constant Therapy -----------------------------------------------------
+aiaph:ConstantTherapy a aiaph:AITool ;
+    aiaph:toolName "Constant Therapy" ;
+    aiaph:developer "Constant Therapy Health, Inc. (ricerca fondativa di Swathi Kiran, Boston University)" ;
+    aiaph:releaseYear "2013"^^xsd:integer ;
+    aiaph:toolDescription "Piattaforma digitale terapeutica per tablet/smartphone con oltre 14 categorie e 80+ esercizi di linguaggio, parola e cognizione. Il 'NeuroPerformance Engine' (NPE), proprietario, usa AI e analisi dei dati per personalizzare in tempo reale il programma di esercizi in base ai progressi dell'utente."@it ;
+    aiaph:sourceURL <https://constanttherapyhealth.com/science/> ;
+    aiaph:employsTechnique aiaph:AdaptiveLearningAlgorithm .
+
+aiaph:ca_ConstantTherapy a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:ConstantTherapy ;
+    aiaph:applicationDescription "Terapia digitale auto-somministrata ad alta intensità per l'afasia post-ictus, pensata per estendere la pratica oltre la seduta clinica tradizionale; un trial di fase II decentralizzato ha mostrato risultati statisticamente e clinicamente superiori allo standard of care."@it ;
+    aiaph:targetsAphasiaType aiaph:AnomicAphasia , aiaph:BrocaAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction , aiaph:WrittenProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level2_ControlledTrial ;
+    aiaph:reportedMetric "800.000+ utenti; 325 milioni+ esercizi completati; trial di fase II decentralizzato più efficace dello standard of care (Kiran & Smith, 2025)" ;
+    aiaph:hasLimitation aiaph:lim_ct_1 .
+aiaph:lim_ct_1 a aiaph:AccessibilityLimitation ;
+    aiaph:limitationNote "L'efficacia dell'autogestione digitale è condizionata da alfabetizzazione digitale e supporto tecnologico disponibile; Nichol et al. (2023) segnalano questi come barriere reali all'implementazione."@it .
+
+### 2. iTalkBetter ------------------------------------------------------------
+aiaph:ITalkBetter a aiaph:AITool ;
+    aiaph:toolName "iTalkBetter" ;
+    aiaph:developer "University College London (UCL)" ;
+    aiaph:releaseYear "2020"^^xsd:integer ;
+    aiaph:toolDescription "App di terapia gamificata auto-condotta per la produzione del linguaggio, dotata di un sistema di verifica automatica dell'enunciato in tempo reale che guida l'algoritmo di terapia adattiva."@it ;
+    aiaph:sourceURL <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11056404/> ;
+    aiaph:employsTechnique aiaph:RealTimeUtteranceVerification , aiaph:AdaptiveLearningAlgorithm .
+
+aiaph:ca_ITalkBetter a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:ITalkBetter ;
+    aiaph:applicationDescription "Terapia di denominazione a confronto (confrontation naming) per il recupero lessicale in afasia cronica, verificata in un trial clinico randomizzato item-per-item di fase II (27 partecipanti, UCL, 2020-2022) con esiti comportamentali e di risonanza magnetica strutturale/funzionale."@it ;
+    aiaph:targetsAphasiaType aiaph:AnomicAphasia , aiaph:BrocaAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level2_ControlledTrial ;
+    aiaph:reportedMetric "n=27; trial randomizzato a livello di item; blocco di terapia di 6 settimane; cambiamenti osservabili in struttura/funzione cerebrale" ;
+    aiaph:hasLimitation aiaph:lim_itb_1 .
+aiaph:lim_itb_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Campione monocentrico di 27 persone; la risposta alla terapia risulta variabile tra individui e le regioni cerebrali chiave per l'impegno terapeutico non sono ancora del tutto identificate."@it .
+
+### 3. AphasiaScripts ---------------------------------------------------------
+aiaph:AphasiaScripts a aiaph:AITool ;
+    aiaph:toolName "AphasiaScripts" ;
+    aiaph:developer "Rehabilitation Institute of Chicago (Cherney, Halper, Holland, Cole)" ;
+    aiaph:releaseYear "2007"^^xsd:integer ;
+    aiaph:toolDescription "Software per l'addestramento computerizzato di script conversazionali personalizzati, con supporto per la pratica ripetuta di frasi ecologiche della vita quotidiana del paziente."@it ;
+    aiaph:sourceURL <https://pubs.asha.org/doi/abs/10.1044/1058-0360%282008/003%29> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition .
+
+aiaph:ca_AphasiaScripts a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:AphasiaScripts ;
+    aiaph:applicationDescription "Addestramento di script conversazionali personalizzati per pazienti con afasia cronica non fluente, con l'obiettivo di automatizzare frasi funzionali per la vita quotidiana; studio preliminare su 3 partecipanti (Cherney et al., 2008)."@it ;
+    aiaph:targetsAphasiaType aiaph:BrocaAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SyntacticMorphologicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level3_PilotOrSingleCase ;
+    aiaph:reportedMetric "n=3, studio preliminare descrittivo" ;
+    aiaph:hasLimitation aiaph:lim_as_1 .
+aiaph:lim_as_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Risultati preliminari su soli 3 partecipanti; non ancora replicati su larga scala nella letteratura reperita."@it .
+
+### 4. VNeST computerizzato/teleriabilitazione --------------------------------
+aiaph:ComputerizedVNeST a aiaph:AITool ;
+    aiaph:toolName "Verb Network Strengthening Treatment (VNeST) - versione computerizzata/teleriabilitazione" ;
+    aiaph:developer "Adattamento computerizzato del protocollo di Lisa Edmonds (Furnas & Edmonds, 2014)" ;
+    aiaph:releaseYear "2014"^^xsd:integer ;
+    aiaph:toolDescription "Versione digitale/teleriabilitativa di un protocollo evidence-based incentrato sui verbi: il paziente costruisce frasi soggetto-verbo-oggetto per rinforzare la rete semantica del verbo e facilitare il recupero lessicale in frase."@it ;
+    aiaph:sourceURL <https://tactustherapy.com/vnest-verb-network-strengthening-app/> ;
+    aiaph:employsTechnique aiaph:AdaptiveLearningAlgorithm .
+
+aiaph:ca_VNeST a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:ComputerizedVNeST ;
+    aiaph:applicationDescription "Rinforzo della rete verbale per il recupero lessicale in frase, erogato via computer/teleriabilitazione; mostra generalizzazione a item non trattati in afasia da moderata a severa."@it ;
+    aiaph:targetsAphasiaType aiaph:AnomicAphasia , aiaph:BrocaAphasia , aiaph:ConductionAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain , aiaph:SyntacticMorphologicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:evaluatedByTest aiaph:BostonNamingTest ;
+    aiaph:hasEvidenceLevel aiaph:Level3_PilotOrSingleCase ;
+    aiaph:reportedMetric "Generalizzazione documentata a item non allenati (Furnas & Edmonds, 2014; Edmonds et al., 2009, 2011, 2014)" ;
+    aiaph:hasLimitation aiaph:lim_vnest_1 .
+aiaph:lim_vnest_1 a aiaph:ConstructValidityLimitation ;
+    aiaph:limitationNote "Il successo è più marcato con comprensione di base preservata; la componente 'AI' è qui limitata a erogazione/adattamento computerizzato più che ad apprendimento automatico in senso stretto."@it .
+
+### 5. Big CACTUS / CSLT ------------------------------------------------------
+aiaph:BigCactusCSLT a aiaph:AITool ;
+    aiaph:toolName "Computerised Speech and Language Therapy (CSLT) - trial Big CACTUS" ;
+    aiaph:developer "University of Sheffield (Palmer, Cooper, Harrison et al.), NHS UK" ;
+    aiaph:releaseYear "2019"^^xsd:integer ;
+    aiaph:toolDescription "Intervento complesso di terapia computerizzata per il word-finding, che combina software, supervisione di logopedisti/volontari e pratica autogestita dal paziente; oggetto del più ampio RCT multicentrico sulla terapia computerizzata dell'afasia nel Regno Unito."@it ;
+    aiaph:sourceURL <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10731555/> ;
+    aiaph:employsTechnique aiaph:AdaptiveLearningAlgorithm .
+
+aiaph:ca_BigCactus a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:BigCactusCSLT ;
+    aiaph:applicationDescription "Trattamento intensivo del word-finding basato su computer in persone con afasia da almeno 4 mesi post-ictus; ha dimostrato superiorità rispetto al trattamento standard in un RCT multicentrico (Palmer et al., 2019), citato come esempio di 'evidenza di Livello I'."@it ;
+    aiaph:targetsAphasiaType aiaph:AnomicAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level1_SystematicReviewOrRCT ;
+    aiaph:reportedMetric "RCT multicentrico, evidenza di Livello I per l'efficacia clinica e la fattibilità (Kiran & Smith, 2025)" ;
+    aiaph:hasLimitation aiaph:lim_cactus_1 .
+aiaph:lim_cactus_1 a aiaph:ClinicalGovernanceLimitation ;
+    aiaph:limitationNote "L'intervento richiede comunque software, terapisti/volontari e pratica autogestita: la componente tecnologica da sola non è l'unico 'ingrediente attivo' del beneficio osservato (Harrison et al., 2023)."@it .
+
+### 6. Classificatore SVM su parlato afasico olandese -------------------------
+aiaph:DutchASRSVMClassifier a aiaph:AITool ;
+    aiaph:toolName "Pipeline ASR + classificatore SVM per il rilevamento dell'afasia dal parlato naturale (olandese)" ;
+    aiaph:developer "KU Leuven (Barberis, De Clercq, Tamm, Van hamme, Vandermosten)" ;
+    aiaph:releaseYear "2024"^^xsd:integer ;
+    aiaph:toolDescription "Pipeline diagnostica che trascrive automaticamente un compito di descrizione di immagine e ne estrae feature acustiche e linguistiche, fornite in input a un classificatore Support Vector Machine."@it ;
+    aiaph:sourceURL <https://arxiv.org/pdf/2408.14082> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition , aiaph:SupportVectorMachineClassifier .
+
+aiaph:ca_DutchSVM a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:DutchASRSVMClassifier ;
+    aiaph:applicationDescription "Rilevamento automatico dell'afasia a partire dal parlato spontaneo (62 persone con afasia, 57 controlli); il modello ASR ha ottenuto un Word Error Rate del 24,5%, e le feature di fluenza sono risultate le più discriminanti per la classificazione SVM."@it ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "WER 24,5%; accuratezza di classificazione individuale 86,6% (Barberis et al., 2024)" ;
+    aiaph:hasLimitation aiaph:lim_svm_1 .
+aiaph:lim_svm_1 a aiaph:DataLimitation ;
+    aiaph:limitationNote "Sviluppato e validato su parlato olandese; la trasferibilità cross-linguistica non è garantita e richiede ri-addestramento su corpora specifici per lingua."@it .
+
+### 7. Trascrizione automatica per la Primary Progressive Aphasia -------------
+aiaph:WhisperPPAClassification a aiaph:AITool ;
+    aiaph:toolName "Trascrizione automatica (Whisper) per la classificazione della Primary Progressive Aphasia" ;
+    aiaph:developer "UCSF Memory and Aging Center" ;
+    aiaph:releaseYear "2026"^^xsd:integer ;
+    aiaph:toolDescription "Confronto tra trascrizione manuale, automatica (Whisper) e semi-automatica con controllo qualità, per l'estrazione di feature linguistiche da compiti di descrizione di immagine in pazienti con afasia progressiva primaria."@it ;
+    aiaph:sourceURL <https://www.medrxiv.org/content/10.64898/2026.02.24.26346981.full.pdf> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition , aiaph:DeepLearningClassifier .
+
+aiaph:ca_WhisperPPA a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:WhisperPPAClassification ;
+    aiaph:applicationDescription "Classificazione delle varianti di afasia progressiva primaria (semantica, logopenica, non fluente/agrammatica) a partire da trascrizioni automatiche; nonostante l'accuratezza di trascrizione non elevata, i classificatori a valle basati su feature ASR restano robusti, superando in alcuni casi quelli basati su trascrizione manuale."@it ;
+    aiaph:targetsAphasiaType aiaph:SemanticVariantPPA , aiaph:LogopenicVariantPPA , aiaph:NonfluentAgrammaticVariantPPA ;
+    aiaph:addressesLinguisticDomain aiaph:SyntacticMorphologicalDomain , aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "109 pazienti PPA, 32 controlli sani (UCSF Memory and Aging Center)" ;
+    aiaph:hasLimitation aiaph:lim_whisper_ppa_1 .
+aiaph:lim_whisper_ppa_1 a aiaph:ConstructValidityLimitation ;
+    aiaph:limitationNote "La qualità della trascrizione automatica peggiora nella variante non-fluente/agrammatica (nfvPPA), dove i deficit motori del linguaggio compromettono l'ASR stesso."@it .
+
+### 8. Careful Whisper (classificazione sottotipi) ----------------------------
+aiaph:CarefulWhisperClassifier a aiaph:AITool ;
+    aiaph:toolName "Careful Whisper - pipeline interpretabile per biomarcatori vocali dell'afasia" ;
+    aiaph:developer "Ricerca accademica indipendente (pubblicazione arXiv)" ;
+    aiaph:releaseYear "2023"^^xsd:integer ;
+    aiaph:toolDescription "Pipeline che sfrutta rappresentazioni interne di un modello ASR (Whisper) per costruire prototipi interpretabili, usati come feature per classificatori standard di machine learning applicabili anche ad altre patologie e lingue."@it ;
+    aiaph:sourceURL <https://arxiv.org/pdf/2308.01327> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition , aiaph:DeepLearningClassifier .
+
+aiaph:ca_CarefulWhisper a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:CarefulWhisperClassifier ;
+    aiaph:applicationDescription "Distinzione tra parlato di persone con afasia e controlli sani con accuratezza a livello umano, e distinzione tra i sottotipi di afasia più frequenti con il 90% di accuratezza; il paper originale identifica esplicitamente globale, anomica, di Wernicke e di Broca come i quattro sottotipi post-ictus più frequenti nel campione."@it ;
+    aiaph:targetsAphasiaType aiaph:GlobalAphasia , aiaph:AnomicAphasia , aiaph:WernickeAphasia , aiaph:BrocaAphasia ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza ~90% nella distinzione dei sottotipi di afasia più frequenti" ;
+    aiaph:hasLimitation aiaph:lim_carefulwhisper_1 .
+aiaph:lim_carefulwhisper_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Risultati su corpus di ricerca controllato; non ancora validato in un flusso di lavoro clinico reale su larga scala."@it .
+
+### 9. Rilevatore di parafasie seq2seq ----------------------------------------
+aiaph:Seq2seqParaphasiaDetector a aiaph:AITool ;
+    aiaph:toolName "Seq2seq per il rilevamento automatico delle parafasie" ;
+    aiaph:developer "Ricerca accademica (pubblicazione arXiv)" ;
+    aiaph:releaseYear "2023"^^xsd:integer ;
+    aiaph:toolDescription "Sistema basato su modelli sequence-to-sequence per identificare automaticamente le parafasie nel parlato afasico, riducendo il tempo che i logopedisti dedicano a trascrizione e analisi manuale."@it ;
+    aiaph:sourceURL <https://arxiv.org/pdf/2312.10518> ;
+    aiaph:employsTechnique aiaph:DeepLearningClassifier , aiaph:NaturalLanguageProcessing .
+
+aiaph:ca_Seq2seqParaphasia a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:Seq2seqParaphasiaDetector ;
+    aiaph:applicationDescription "Supporto automatico alla valutazione: rilevamento delle parafasie per accelerare classificazione dell'afasia, pianificazione del trattamento e monitoraggio dei progressi."@it ;
+    aiaph:targetsAphasiaType aiaph:WernickeAphasia , aiaph:ConductionAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:PhonologicalDomain , aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_seq2seq_1 .
+aiaph:lim_seq2seq_1 a aiaph:DataLimitation ;
+    aiaph:limitationNote "Le performance dipendono dalla quantità e varietà di parlato afasico annotato disponibile per l'addestramento, una risorsa scarsa rispetto al parlato tipico."@it .
+
+### 10. Progetto MARS ----------------------------------------------------------
+aiaph:MARSProject a aiaph:AITool ;
+    aiaph:toolName "MARS - Machine Analysis and Reporting of Spoken personal stories with aphasia" ;
+    aiaph:developer "City St George's, University of London (Dipper, Cruice, Devane, Moss) con Therapy Box e Barts Health, finanziato da Barts Charity" ;
+    aiaph:releaseYear "2024"^^xsd:integer ;
+    aiaph:toolDescription "Sistema che registra, trascrive e analizza automaticamente racconti narrativi spontanei di persone con afasia, generando un report clinico strutturato, laddove l'analisi manuale a livello di narrazione è tipicamente troppo onerosa per la pratica NHS quotidiana."@it ;
+    aiaph:sourceURL <https://www.citystgeorges.ac.uk/news-and-events/news/2026/july/mars-project-wins-tech4good-judges-award> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition , aiaph:NaturalLanguageProcessing .
+
+aiaph:ca_MARS a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:MARSProject ;
+    aiaph:applicationDescription "Analisi automatizzata del linguaggio narrativo spontaneo (non solo a livello di parola/frase) per colmare un vuoto nella pratica clinica NHS; l'analisi completa richiede circa 6 minuti contro le 8 ore e 44 minuti di un analista umano esperto (risparmio del 99%), oppure 1 ora e 20 minuti con verifica del terapista (risparmio dell'84%). Premiato con il Tech4Good Judges' Award for AI for Good 2026."@it ;
+    aiaph:addressesLinguisticDomain aiaph:PragmaticDomain , aiaph:SyntacticMorphologicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level3_PilotOrSingleCase ;
+    aiaph:reportedMetric "Riduzione del tempo di analisi: 99% (automatica) / 84% (con verifica del terapista) rispetto all'analisi manuale" ;
+    aiaph:hasLimitation aiaph:lim_mars_1 .
+aiaph:lim_mars_1 a aiaph:ClinicalGovernanceLimitation ;
+    aiaph:limitationNote "L'accuratezza migliore si ottiene quando un terapista verifica e corregge l'analisi automatica ad ogni fase: lo strumento è pensato per affiancare, non sostituire, il giudizio clinico."@it .
+
+### 11. RehabilitIA -------------------------------------------------------------
+aiaph:RehabilitIA a aiaph:AITool ;
+    aiaph:toolName "RehabilitIA" ;
+    aiaph:developer "Galindo-Cera, Navarrete, Manrique, Herrera" ;
+    aiaph:releaseYear "2026"^^xsd:integer ;
+    aiaph:toolDescription "Agenti di IA generativa per la terapia dell'afasia personalizzata in lingua spagnola, che implementano due protocolli clinicamente validati (VNeST e Spaced Retrieval) attraverso pipeline AI modulari con generazione di contenuti controllata, calibrazione della difficoltà e personalizzazione autobiografica, sempre sotto supervisione del terapista."@it ;
+    aiaph:sourceURL <https://link.springer.com/chapter/10.1007/978-3-032-35390-0_13> ;
+    aiaph:employsTechnique aiaph:LargeLanguageModelGeneration .
+
+aiaph:ca_RehabilitIA a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:RehabilitIA ;
+    aiaph:applicationDescription "Generazione automatica e personalizzata (anche su base autobiografica) di materiali per VNeST e per il richiamo distanziato (Spaced Retrieval), con validazione strutturata dell'output e supervisione terapeutica obbligatoria."@it ;
+    aiaph:targetsAphasiaType aiaph:AnomicAphasia , aiaph:BrocaAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain , aiaph:SyntacticMorphologicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_rehabilitia_1 .
+aiaph:lim_rehabilitia_1 a aiaph:ClinicalGovernanceLimitation ;
+    aiaph:limitationNote "Il sistema è esplicitamente vincolato alla supervisione del terapista; un uso non supervisionato dei contenuti generati non è previsto dal disegno dello studio."@it .
+
+### 12. ChatPhasia ---------------------------------------------------------------
+aiaph:ChatPhasia a aiaph:AITool ;
+    aiaph:toolName "ChatPhasia" ;
+    aiaph:developer "Singapore Institute of Technology (Tong, Azmi, He, Kee, Lee, Yeo)" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Sistema end-to-end personalizzato per la terapia dell'afasia basato su modelli conversazionali generativi."@it ;
+    aiaph:sourceURL <https://doi.org/10.25447/sit.29163800.v1> ;
+    aiaph:employsTechnique aiaph:LargeLanguageModelGeneration .
+
+aiaph:ca_ChatPhasia a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:ChatPhasia ;
+    aiaph:applicationDescription "Interazione conversazionale personalizzata come esercizio terapeutico end-to-end, descritta come contributo di conferenza (Singapore Institute of Technology, 2025)."@it ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_chatphasia_1 .
+aiaph:lim_chatphasia_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Presentato come contributo di conferenza; non risultano ancora, nelle fonti reperite, dati di trial clinico su popolazione di pazienti."@it .
+
+### 13. Uso informale di LLM generalisti da parte dei clinici -------------------
+aiaph:GenerativeAIClinicianAssistedMaterials a aiaph:AITool ;
+    aiaph:toolName "Uso clinico informale di LLM generalisti (ChatGPT, Gemini, Copilot) per generare materiali terapeutici" ;
+    aiaph:developer "Pratica clinica emergente, non un singolo prodotto (riportata da S. Kiran e S. Pillay in BrainWise Media, 2025)" ;
+    aiaph:releaseYear "2023"^^xsd:integer ;
+    aiaph:toolDescription "Alcuni logopedisti usano strumenti di IA generativa generalisti per creare materiali di pratica su misura per ciascun paziente (descrizioni di immagini, liste di parole/frasi, script), invece di produrli manualmente; alcuni pazienti li usano anche direttamente per ottenere suggerimenti di parole durante un'impasse comunicativa."@it ;
+    aiaph:sourceURL <https://brainwisemedia.com/using-ai-to-treat-aphasia/> ;
+    aiaph:employsTechnique aiaph:LargeLanguageModelGeneration .
+
+aiaph:ca_GenAIInformal a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:GenerativeAIClinicianAssistedMaterials ;
+    aiaph:applicationDescription "Generazione rapida di materiali di pratica personalizzati e suggerimento di parole in tempo reale; gli stessi clinici intervistati sottolineano che questo non sostituisce la componente umanistica della terapia condotta dal logopedista."@it ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction , aiaph:WrittenProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level5_InformalClinicalUse ;
+    aiaph:hasLimitation aiaph:lim_genai_1 .
+aiaph:lim_genai_1 a aiaph:ClinicalGovernanceLimitation ;
+    aiaph:limitationNote "Non è uno strumento clinico validato ma una pratica informale emergente; non esistono ancora studi sistematici sulla sicurezza, accuratezza clinica o efficacia di questo uso."@it .
+
+### 14. Terapia conversazionale in realtà virtuale semi-immersiva --------------
+aiaph:SemiImmersiveVRTherapy a aiaph:AITool ;
+    aiaph:toolName "Terapia conversazionale in realtà virtuale semi-immersiva" ;
+    aiaph:developer "Aphasia Experimental Laboratory - Fondazione Carlo Molo Onlus, Torino (Giachero, Calati, Pia, Marangolo et al.)" ;
+    aiaph:releaseYear "2020"^^xsd:integer ;
+    aiaph:toolDescription "Ambiente di realtà virtuale che ricrea scenari di vita quotidiana per la pratica di terapia conversazionale, come alternativa più pragmaticamente orientata alla terapia convenzionale in studio."@it ;
+    aiaph:sourceURL <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7428879/> ;
+    aiaph:employsTechnique aiaph:VirtualRealityEnvironment .
+
+aiaph:ca_VRTherapy a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:SemiImmersiveVRTherapy ;
+    aiaph:applicationDescription "36 persone con afasia cronica randomizzate a terapia conversazionale in VR o terapia convenzionale, 2 sedute/settimana per 6 mesi (48 sedute totali); nessuna differenza significativa tra i gruppi sulle misure primarie, pur con miglioramenti distribuiti diversamente tra i domini valutati (linguaggio, autostima, qualità di vita)."@it ;
+    aiaph:targetsAphasiaType aiaph:BrocaAphasia , aiaph:AnomicAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:PragmaticDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level2_ControlledTrial ;
+    aiaph:reportedMetric "n=36, RCT; nessuna differenza significativa tra gruppo VR e gruppo di controllo sulle misure primarie (Giachero et al., 2020)" ;
+    aiaph:hasLimitation aiaph:lim_vr_1 .
+aiaph:lim_vr_1 a aiaph:ConstructValidityLimitation ;
+    aiaph:limitationNote "Caso di 'evidenza debole/nulla' rilevante quanto i casi di successo: un RCT ben disegnato può non mostrare superiorità della tecnologia AI/VR rispetto alla terapia convenzionale equivalente in intensità."@it .
+
+### 15. Agente conversazionale incarnato (Furhat + LLM) -------------------------
+aiaph:FurhatECA a aiaph:AITool ;
+    aiaph:toolName "Agente Conversazionale Incarnato (ECA) basato su LLM con robot Furhat" ;
+    aiaph:developer "Metodologia Co-AI Design-Based Research; pilota con Association for Stroke and Aphasia" ;
+    aiaph:releaseYear "2026"^^xsd:integer ;
+    aiaph:toolDescription "Assistente personale conversazionale incarnato per la continuità assistenziale domiciliare dopo l'ictus, con pipeline conversazionale basata su LLM e implementazione fisica tramite il robot sociale Furhat."@it ;
+    aiaph:sourceURL <https://pmc.ncbi.nlm.nih.gov/articles/PMC13062796/> ;
+    aiaph:employsTechnique aiaph:LargeLanguageModelGeneration , aiaph:EmbodiedConversationalAvatar .
+
+aiaph:ca_FurhatECA a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:FurhatECA ;
+    aiaph:applicationDescription "Valutato prima con pazienti sintetici e poi in un progetto pilota con familiari di pazienti e professionisti della riabilitazione, incluso un gruppo multidisciplinare con membri di un'associazione per l'ictus e l'afasia; le risposte del LLM a domande reali hanno mostrato maggiore diversità lessicale e minore ripetitività rispetto a quelle su domande sintetiche, restando coerenti dal punto di vista fattuale."@it ;
+    aiaph:addressesLinguisticDomain aiaph:PragmaticDomain ;
+    aiaph:addressesModality aiaph:OralComprehension , aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_furhat_1 .
+aiaph:lim_furhat_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Fase di ricerca pilota (Design-Based Research); la valutazione con persone con afasia stesse, e non solo con familiari/professionisti, resta un passo successivo dichiarato dagli autori."@it .
+
+### 16. Neuroprotesi vocale (confine nosografico) --------------------------------
+aiaph:SpeechNeuroprosthesisBCI a aiaph:AITool ;
+    aiaph:toolName "Neuroprotesi vocale basata su interfaccia cervello-computer (BRAVO trial)" ;
+    aiaph:developer "UCSF Chang Lab (Moses, Metzger, Chang et al.)" ;
+    aiaph:releaseYear "2021"^^xsd:integer ;
+    aiaph:toolDescription "Dispositivo che decodifica in tempo reale l'attività corticale associata al tentativo di parlare, traducendola in parole e frasi tramite modelli di deep learning e un modello del linguaggio naturale, per persone con anartria (perdita della capacità di articolare il linguaggio) dovuta a paralisi grave."@it ;
+    aiaph:sourceURL <https://pubmed.ncbi.nlm.nih.gov/34260835/> ;
+    aiaph:employsTechnique aiaph:IntracorticalBCI , aiaph:DeepLearningClassifier , aiaph:NaturalLanguageProcessing .
+
+aiaph:ca_SpeechBCI a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:SpeechNeuroprosthesisBCI ;
+    aiaph:applicationDescription "In un singolo partecipante con anartria e quadriparesi spastica da ictus del tronco encefalico, il dispositivo ha raggiunto una velocità mediana di decodifica di 15,2 parole/minuto (WER mediano 25,6%), circa 3 volte più rapida della precedente interfaccia di digitazione usata dal paziente. INCLUSA QUI COME CASO DI CONFINE: l'anartria è un disturbo motorio dell'articolazione, non un disturbo afasico del linguaggio in senso stretto, ma la letteratura sulle tecnologie IA per la comunicazione tratta spesso i due ambiti insieme."@it ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level3_PilotOrSingleCase ;
+    aiaph:reportedMetric "15,2 parole/minuto; WER mediano 25,6%; n=1 (Moses et al., 2021, NEJM)" ;
+    aiaph:hasLimitation aiaph:lim_bci_1 , aiaph:lim_bci_2 .
+aiaph:lim_bci_1 a aiaph:NosologicalBoundaryLimitation ;
+    aiaph:limitationNote "Il target clinico primario (anartria/disartria da paralisi) è concettualmente distinto dall'afasia: la competenza linguistica centrale è preservata, è compromessa l'articolazione motoria. La sua inclusione in questa ontologia è una scelta analitica deliberata per rendere esplicito, e non nascondere, questo confine nosografico."@it .
+aiaph:lim_bci_2 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Dimostrazione su singolo partecipante con vocabolario vincolato; richiede impianto chirurgico, quindi non è una tecnologia scalabile alla popolazione generale di persone con afasia."@it .
+
+# EOF
+
+#################################################################
+# 12. ESPANSIONE SISTEMATICA (fase 2) - PROTOCOLLO DI RICERCA
+#################################################################
+# Fonti interrogate: arXiv, PubMed/PMC, medRxiv, Google Scholar (via ricerca web),
+# più la rassegna sistematica Niculescu, Ehnes & Dong (2026), "Bridging neuroscience
+# and AI: adaptive, culturally sensitive technologies transforming aphasia
+# rehabilitation" (arXiv:2603.22357), usata come fonte secondaria strutturata.
+# Parole chiave: "AI aphasia therapy", "machine learning aphasia diagnosis",
+# "aphasia recovery prediction machine learning", "brain-computer interface
+# aphasia", "EEG neurofeedback aphasia", "AAC aphasia artificial intelligence".
+# Criteri di inclusione: presenza di una componente esplicita di IA/ML/NLP;
+# oggetto = afasia o disturbo strettamente adiacente esplicitamente discusso
+# nella letteratura sull'IA per l'afasia; fonte verificabile (peer-reviewed,
+# preprint accademico, o documentazione ufficiale del prodotto). Periodo:
+# 1992-2026 (con concentrazione 2019-2026).
+#################################################################
+
+aiaph:NonInvasiveBCISpeller a aiaph:AITechnique ; rdfs:label "BCI non invasiva per la scrittura assistita (speller)"@it .
+aiaph:DynamicTimeWarpingAlignment a aiaph:AITechnique ; rdfs:label "Allineamento Dynamic Time Warping"@it .
+aiaph:NeuralMachineTranslation a aiaph:AITechnique ; rdfs:label "Traduzione automatica neurale (NMT)"@it .
+aiaph:PredictiveOutcomeModeling a aiaph:AITechnique ; rdfs:label "Modellazione predittiva dell'esito clinico"@it .
+aiaph:EEGNeurofeedbackDecoding a aiaph:AITechnique ; rdfs:label "Decodifica EEG per neurofeedback"@it .
+
+aiaph:toolCategory a owl:AnnotationProperty ;
+    rdfs:label "categoria dello strumento"@it ;
+    rdfs:comment "Etichetta analitica per raggruppare gli AITool in famiglie funzionali (Diagnosi/Classificazione, Terapia adattiva, AAC, Generazione linguistica, Realtà virtuale, Agente conversazionale, BCI/Neuroprotesi, Neurofeedback, Predizione prognostica), usata per le analisi quantitative dello stato dell'arte."@it .
+
+# --- Categorizzazione retroattiva dei 16 strumenti della fase 1 ---
+aiaph:ConstantTherapy aiaph:toolCategory "Terapia adattiva"@it .
+aiaph:ITalkBetter aiaph:toolCategory "Terapia adattiva"@it .
+aiaph:AphasiaScripts aiaph:toolCategory "Terapia adattiva"@it .
+aiaph:ComputerizedVNeST aiaph:toolCategory "Terapia adattiva"@it .
+aiaph:BigCactusCSLT aiaph:toolCategory "Terapia adattiva"@it .
+aiaph:DutchASRSVMClassifier aiaph:toolCategory "Diagnosi/Classificazione"@it .
+aiaph:WhisperPPAClassification aiaph:toolCategory "Diagnosi/Classificazione"@it .
+aiaph:CarefulWhisperClassifier aiaph:toolCategory "Diagnosi/Classificazione"@it .
+aiaph:Seq2seqParaphasiaDetector aiaph:toolCategory "Diagnosi/Classificazione"@it .
+aiaph:MARSProject aiaph:toolCategory "Diagnosi/Classificazione"@it .
+aiaph:RehabilitIA aiaph:toolCategory "Generazione linguistica (LLM)"@it .
+aiaph:ChatPhasia aiaph:toolCategory "Agente conversazionale"@it .
+aiaph:GenerativeAIClinicianAssistedMaterials aiaph:toolCategory "Generazione linguistica (LLM)"@it .
+aiaph:SemiImmersiveVRTherapy aiaph:toolCategory "Realtà virtuale"@it .
+aiaph:FurhatECA aiaph:toolCategory "Agente conversazionale"@it .
+aiaph:SpeechNeuroprosthesisBCI aiaph:toolCategory "BCI/Neuroprotesi"@it .
+
+### 17. PLORAS - predizione dell'esito linguistico da risonanza magnetica --------
+aiaph:PLORASProject a aiaph:AITool ;
+    aiaph:toolName "PLORAS - Predicting Language Outcome and Recovery After Stroke" ;
+    aiaph:developer "University College London (Seghier, Price et al.)" ;
+    aiaph:releaseYear "2016"^^xsd:integer ;
+    aiaph:toolDescription "Progetto su larga scala che applica modelli di machine learning a scansioni di risonanza magnetica e dati clinico-demografici per predire l'esito linguistico dopo un ictus, su un dataset di centinaia di pazienti."@it ;
+    aiaph:sourceURL <https://pmc.ncbi.nlm.nih.gov/articles/PMC12351174/> ;
+    aiaph:employsTechnique aiaph:PredictiveOutcomeModeling ;
+    aiaph:toolCategory "Predizione prognostica"@it .
+
+aiaph:ca_PLORAS a aiaph:PrognosticApplication ;
+    aiaph:isApplicationOf aiaph:PLORASProject ;
+    aiaph:applicationDescription "758 risonanze magnetiche di pazienti con afasia post-ictus in varia misura, con dati clinico-demografici associati; la dimensione della lesione risulta la feature più predittiva nella classificazione da MRI strutturale."@it ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "758 scansioni MRI; studio di ricerca, non strumento clinico deployato" ;
+    aiaph:hasLimitation aiaph:lim_ploras_1 .
+aiaph:lim_ploras_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Anche con un dataset relativamente ampio per il settore, gli autori notano che servirebbero dataset di immagini ancora più grandi ed eterogenei per cogliere pattern non lineari più sottili."@it .
+
+### 18. Previsione ML in fase acuta di afasia e discorso -------------------------
+aiaph:AcutePhaseMLPrediction a aiaph:AITool ;
+    aiaph:toolName "Predizione ML in fase acuta di risoluzione dell'afasia a 12 mesi" ;
+    aiaph:developer "Marte et al., 2026" ;
+    aiaph:releaseYear "2026"^^xsd:integer ;
+    aiaph:toolDescription "Modelli di machine learning addestrati su dati clinici e di imaging raccolti entro pochi giorni dall'ictus dell'emisfero sinistro, per prevedere la risoluzione dell'afasia e la normalizzazione del linguaggio del discorso a 12 mesi."@it ;
+    aiaph:sourceURL <https://pmc.ncbi.nlm.nih.gov/articles/PMC13193026/> ;
+    aiaph:employsTechnique aiaph:PredictiveOutcomeModeling ;
+    aiaph:toolCategory "Predizione prognostica"@it .
+
+aiaph:ca_AcutePhaseML a aiaph:PrognosticApplication ;
+    aiaph:isApplicationOf aiaph:AcutePhaseMLPrediction ;
+    aiaph:applicationDescription "Support Vector Regression su feature cliniche e di imaging acquisite entro giorni dall'ictus; la previsione della risoluzione dell'afasia a 12 mesi è risultata accurata, quella della normalizzazione del discorso più modesta; tre predittori (WAB-AQ acuto, volume della lesione, pars triangularis sinistra) sono risultati condivisi tra i due esiti."@it ;
+    aiaph:addressesLinguisticDomain aiaph:PragmaticDomain ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "N=73 (media 2,8 giorni post-esordio); risoluzione afasia: Random Forest F1=0,874 (95% CI 0,800-0,941), r=0,827, MAE=7,26 punti WAB-AQ; discorso: SVR F1=0,725, r=0,617, MAE=8,96 (Marte et al., 2026)" ;
+    aiaph:hasLimitation aiaph:lim_acuteml_1 .
+aiaph:lim_acuteml_1 a aiaph:ConstructValidityLimitation ;
+    aiaph:limitationNote "Entrambi i modelli tendono a sovrastimare gli esiti cronici più severi: un limite sistematico rilevante per l'uso in stratificazione clinica reale."@it .
+
+### 19. CNN 3D su morfometria cerebrale per severità dell'afasia -----------------
+aiaph:DeepLearningMorphometryPrediction a aiaph:AITool ;
+    aiaph:toolName "CNN 3D su morfometria cerebrale per la predizione della severità dell'afasia" ;
+    aiaph:developer "Ricerca accademica, Communications Medicine (Nature), 2024" ;
+    aiaph:releaseYear "2024"^^xsd:integer ;
+    aiaph:toolDescription "Rete neurale convoluzionale 3D applicata a mappe di lesione cerebrale e tessuto cerebrale complessivo, per predire la severità dell'afasia in fase cronica post-ictus, con l'ipotesi che il modello colga pattern di atrofia distribuiti oltre la sola area lesionale."@it ;
+    aiaph:sourceURL <https://www.nature.com/articles/s43856-024-00541-8> ;
+    aiaph:employsTechnique aiaph:PredictiveOutcomeModeling , aiaph:DeepLearningClassifier ;
+    aiaph:toolCategory "Predizione prognostica"@it .
+
+aiaph:ca_DLMorphometry a aiaph:PrognosticApplication ;
+    aiaph:isApplicationOf aiaph:DeepLearningMorphometryPrediction ;
+    aiaph:applicationDescription "Confronto tra CNN 3D e metodi di machine learning multivariato classico per la predizione della severità dell'afasia cronica da immagini di risonanza magnetica strutturale."@it ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_dlmorph_1 .
+aiaph:lim_dlmorph_1 a aiaph:DataLimitation ;
+    aiaph:limitationNote "Studio cross-sezionale su dataset di ricerca; la generalizzabilità a popolazioni cliniche eterogenee su larga scala resta da dimostrare."@it .
+
+### 20. Classificatore MFCC per severità dell'afasia -----------------------------
+aiaph:MFCCSeverityClassifier a aiaph:AITool ;
+    aiaph:toolName "Classificatore a rete neurale profonda su MFCC per la severità dell'afasia" ;
+    aiaph:developer "Herath, Weraniyagoda, Rajapaksha, Wijesekara, Sudheera, Chong (2022)" ;
+    aiaph:releaseYear "2022"^^xsd:integer ;
+    aiaph:toolDescription "Rete neurale profonda addestrata su Mel Frequency Cepstral Coefficients (MFCC) estratti dal parlato afasico rilevato da sensori audio, per classificare dieci livelli di severità dell'afasia e raccomandare terapie del linguaggio mirate."@it ;
+    aiaph:sourceURL <https://www.mdpi.com/1424-8220/22/18/6966> ;
+    aiaph:employsTechnique aiaph:DeepLearningClassifier ;
+    aiaph:toolCategory "Diagnosi/Classificazione"@it .
+
+aiaph:ca_MFCCSeverity a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:MFCCSeverityClassifier ;
+    aiaph:applicationDescription "Classificazione automatica della severità dell'afasia in dieci livelli a partire da feature acustiche MFCC, con l'obiettivo di raccomandare terapie del linguaggio personalizzate in base al grado di severità rilevato."@it ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza superiore al 99% nella classificazione di dieci livelli di severità (Herath et al., 2022)" ;
+    aiaph:hasLimitation aiaph:lim_mfcc_1 .
+aiaph:lim_mfcc_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "L'accuratezza estremamente elevata su un compito a 10 classi in un dataset controllato solleva la tipica domanda di generalizzazione a parlato spontaneo e popolazioni non viste nello studio originale."@it .
+
+### 21. Identificazione del target di parafasie tramite LLM ---------------------
+aiaph:LLMParaphasiaTargetIdentification a aiaph:AITool ;
+    aiaph:toolName "Identificazione automatica del target di parafasie tramite LLM" ;
+    aiaph:developer "Salem, Gale, Fleegle, Fergadiotis, Bedrick (2023)" ;
+    aiaph:releaseYear "2023"^^xsd:integer ;
+    aiaph:toolDescription "Modello linguistico di grande scala affinato (fine-tuned) su narrazioni elicitate da immagini, per identificare automaticamente la parola target intesa a partire da una produzione parafasica nel discorso continuo."@it ;
+    aiaph:sourceURL <https://pubs.asha.org/doi/10.1044/2023_JSLHR-23-00306> ;
+    aiaph:employsTechnique aiaph:LargeLanguageModelGeneration , aiaph:NaturalLanguageProcessing ;
+    aiaph:toolCategory "Diagnosi/Classificazione"@it .
+
+aiaph:ca_LLMParaphasiaTarget a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:LLMParaphasiaTargetIdentification ;
+    aiaph:applicationDescription "Identificazione automatica della parola target intesa in produzioni parafasiche nel discorso continuo, un passo verso l'analisi automatica del discorso afasico su larga scala."@it ;
+    aiaph:targetsAphasiaType aiaph:WernickeAphasia , aiaph:ConductionAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza 50,70% (Salem et al., 2023) - un compito riconosciuto come intrinsecamente difficile anche per annotatori umani" ;
+    aiaph:hasLimitation aiaph:lim_llmparaphasia_1 .
+aiaph:lim_llmparaphasia_1 a aiaph:ConstructValidityLimitation ;
+    aiaph:limitationNote "Un'accuratezza del 50% circa segnala che il compito resta lontano da un uso clinico diretto; gli stessi autori lo presentano come passo preliminare verso l'analisi automatica del discorso, non come strumento pronto."@it .
+
+### 22. Feedback ASR per apprassia del linguaggio + afasia (app su tablet) -------
+aiaph:ASRFeedbackApraxiaAphasiaApp a aiaph:AITool ;
+    aiaph:toolName "App basata su ASR per il trattamento tablet-based dell'aprassia del linguaggio con afasia concomitante" ;
+    aiaph:developer "Ballard, Etter, Shen, Monroe, Tan (2019)" ;
+    aiaph:releaseYear "2019"^^xsd:integer ;
+    aiaph:toolDescription "App su tablet che usa il riconoscimento automatico del parlato per fornire feedback in tempo reale sulla correttezza della pronuncia durante la pratica strutturata, rivolta a persone con aprassia del linguaggio e afasia concomitante."@it ;
+    aiaph:sourceURL <https://pubs.asha.org/doi/10.1044/2018_AJSLP-16-0243> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition ;
+    aiaph:toolCategory "Terapia adattiva"@it .
+
+aiaph:ca_ASRApraxia a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:ASRFeedbackApraxiaAphasiaApp ;
+    aiaph:applicationDescription "Il sistema ASR ha identificato correttamente la pronuncia accurata delle singole parole in modo concorde con i valutatori umani nell'80% circa dei casi; i partecipanti hanno mostrato una produzione di parole migliorata dopo quattro settimane di pratica guidata dall'ASR."@it ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level3_PilotOrSingleCase ;
+    aiaph:reportedMetric "~80% di concordanza ASR-valutatori umani; miglioramento della produzione di parole dopo 4 settimane (Ballard et al., 2019)" ;
+    aiaph:hasLimitation aiaph:lim_asrapraxia_1 .
+aiaph:lim_asrapraxia_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Studio di fattibilità su piccolo numero di partecipanti con profilo misto aprassia+afasia, non un campione ampio di sola afasia."@it .
+
+### 23. Traduzione automatica neurale per la riabilitazione della frase ----------
+aiaph:NMTSentenceRehabilitation a aiaph:AITool ;
+    aiaph:toolName "Traduzione automatica neurale (NMT) di frasi afasiche in frasi fluenti" ;
+    aiaph:developer "Smaili, Langlois, Pribil (2022)" ;
+    aiaph:releaseYear "2022"^^xsd:integer ;
+    aiaph:toolDescription "Modello di traduzione automatica neurale addestrato a 'tradurre' frasi prodotte da parlanti con afasia di Broca in frasi grammaticalmente fluenti, come supporto lessicale e grammaticale alla comunicazione."@it ;
+    aiaph:sourceURL <https://aclanthology.org/2022.clib-1.20/> ;
+    aiaph:employsTechnique aiaph:NeuralMachineTranslation ;
+    aiaph:toolCategory "Generazione linguistica (LLM)"@it .
+
+aiaph:ca_NMTSentence a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:NMTSentenceRehabilitation ;
+    aiaph:applicationDescription "Riformulazione automatica di frasi agrammatiche prodotte da parlanti con afasia di Broca in frasi fluenti, dimostrando la fattibilità di un supporto grammaticale/lessicale automatico alla comunicazione."@it ;
+    aiaph:targetsAphasiaType aiaph:BrocaAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SyntacticMorphologicalDomain ;
+    aiaph:addressesModality aiaph:WrittenProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "BLEU ≈ 38 (Smaili et al., 2022)" ;
+    aiaph:hasLimitation aiaph:lim_nmt_1 .
+aiaph:lim_nmt_1 a aiaph:DataLimitation ;
+    aiaph:limitationNote "Addestrato su corpora relativamente piccoli di frasi agrammatiche annotate; un punteggio BLEU di 38 indica una traduzione utile ma imperfetta, non ancora pronta per un uso clinico non supervisionato."@it .
+
+### 24. App di realtà virtuale mobile per la riabilitazione del linguaggio -------
+aiaph:MobileVRSpeechRehabApp a aiaph:AITool ;
+    aiaph:toolName "App mobile di realtà virtuale per la riabilitazione del linguaggio post-ictus" ;
+    aiaph:developer "Bu, Ng, Tong, Chen, Fan, Tang, Cheng, Li, Cheng, Liu (2022)" ;
+    aiaph:releaseYear "2022"^^xsd:integer ;
+    aiaph:toolDescription "App di realtà virtuale per dispositivi mobili che offre addestramento immersivo del linguaggio e delle funzioni cognitive, mirato a espressione orale, comprensione e abilità cognitive."@it ;
+    aiaph:sourceURL <https://games.jmir.org/2022/2/e30196> ;
+    aiaph:employsTechnique aiaph:VirtualRealityEnvironment ;
+    aiaph:toolCategory "Realtà virtuale"@it .
+
+aiaph:ca_MobileVR a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:MobileVRSpeechRehabApp ;
+    aiaph:applicationDescription "Studio pilota di usabilità con pazienti, volontari sani e clinici; valuta la fattibilità e l'accettabilità dell'app prima di un trial di efficacia su più larga scala."@it ;
+    aiaph:addressesModality aiaph:OralProduction , aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level3_PilotOrSingleCase ;
+    aiaph:hasLimitation aiaph:lim_mobilevr_1 .
+aiaph:lim_mobilevr_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Studio di usabilità pilota, non ancora un trial di efficacia clinica su outcome linguistici quantificati."@it .
+
+### 25. Design probes per AAC guidata da IA --------------------------------------
+aiaph:AIAACDesignProbes a aiaph:AITool ;
+    aiaph:toolName "Design probes per sistemi AAC guidati da IA per bisogni comunicativi complessi"@it ;
+    aiaph:developer "Mao, Lee, Shah, Valencia (2025)" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Studio di ricerca-progettazione (design probes) che esplora, con persone con afasia e i loro caregiver, come sistemi AAC potenziati da IA potrebbero indirizzare bisogni comunicativi complessi non ancora coperti dagli strumenti esistenti."@it ;
+    aiaph:sourceURL <https://arxiv.org/abs/2504.09435> ;
+    aiaph:employsTechnique aiaph:LargeLanguageModelGeneration ;
+    aiaph:toolCategory "AAC"@it .
+
+aiaph:ca_AIAACDesign a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:AIAACDesignProbes ;
+    aiaph:applicationDescription "Ricerca esplorativa (non un prodotto finito) sulle esigenze comunicative complesse delle persone con afasia, usata per orientare la progettazione futura di sistemi AAC potenziati da IA."@it ;
+    aiaph:addressesLinguisticDomain aiaph:PragmaticDomain ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_aiaac_1 .
+aiaph:lim_aiaac_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Fase di ricerca qualitativa esplorativa (design probes); non è ancora un sistema implementato e valutato quantitativamente."@it .
+
+### 26. Fusione LLM + speller BCI non invasivo -----------------------------------
+aiaph:LLMBCISpeller a aiaph:AITool ;
+    aiaph:toolName "Fusione di modelli linguistici di grande scala e speller BCI non invasivi"@it ;
+    aiaph:developer "Caria (2025)" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Articolo di visione/rassegna che propone la fusione tra modelli linguistici di grande scala (LLM) e interfacce cervello-computer non invasive di tipo 'speller', per una comunicazione predittiva assistita in persone con gravi limitazioni comunicative."@it ;
+    aiaph:sourceURL <https://www.mdpi.com/1424-8220/25/13/3987> ;
+    aiaph:employsTechnique aiaph:NonInvasiveBCISpeller , aiaph:LargeLanguageModelGeneration ;
+    aiaph:toolCategory "BCI/Neuroprotesi"@it .
+
+aiaph:ca_LLMBCISpeller a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:LLMBCISpeller ;
+    aiaph:applicationDescription "Proposta concettuale (non ancora un sistema clinicamente validato) di combinare la predizione linguistica degli LLM con la velocità limitata degli speller BCI non invasivi, per accelerare la comunicazione assistita."@it ;
+    aiaph:hasEvidenceLevel aiaph:Level5_InformalClinicalUse ;
+    aiaph:hasLimitation aiaph:lim_llmbci_1 .
+aiaph:lim_llmbci_1 a aiaph:NosologicalBoundaryLimitation ;
+    aiaph:limitationNote "Come la neuroprotesi vocale intracorticale, questo filone si rivolge primariamente a persone con gravi limitazioni motorie della comunicazione (non necessariamente afasia in senso stretto); incluso per completezza del panorama IA-comunicazione, con lo stesso confine nosografico dichiarato altrove nel grafo."@it .
+
+### 27. Neurofeedback EEG durante compiti di rilevamento di parole ---------------
+aiaph:EEGWordDetectionNeurofeedback a aiaph:AITool ;
+    aiaph:toolName "Neurofeedback EEG durante compiti di rilevamento di parole per l'afasia cronica" ;
+    aiaph:developer "Musso, Hübner, Schwarzkopf, Bernodusson, LeVan, Weiller, Tangermann (2022)" ;
+    aiaph:releaseYear "2022"^^xsd:integer ;
+    aiaph:toolDescription "Sistema di addestramento del linguaggio basato su interfaccia cervello-computer, che fornisce feedback in tempo reale a partire dalla decodifica EEG durante compiti di rilevamento di parole, in persone con afasia cronica post-ictus."@it ;
+    aiaph:sourceURL <https://academic.oup.com/braincomms/article/4/1/fcac008/6511194> ;
+    aiaph:employsTechnique aiaph:EEGNeurofeedbackDecoding ;
+    aiaph:toolCategory "Neurofeedback"@it .
+
+aiaph:ca_EEGNeurofeedback a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:EEGWordDetectionNeurofeedback ;
+    aiaph:applicationDescription "Studio proof-of-concept: il feedback basato su EEG durante compiti di rilevamento di parole ha mostrato miglioramenti delle abilità linguistiche su più domini in persone con afasia cronica post-ictus, suggerendo un potenziale doppio effetto di ripristino comunicativo e potenziamento della plasticità neurale."@it ;
+    aiaph:addressesModality aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level3_PilotOrSingleCase ;
+    aiaph:hasLimitation aiaph:lim_eegnf_1 .
+aiaph:lim_eegnf_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Studio proof-of-concept su un numero limitato di partecipanti; la maggior parte delle applicazioni BCI/neurofeedback per l'afasia restano, ad oggi, sperimentali (Niculescu et al., 2026)."@it .
+
+### 28. Lingraphica TalkPath Therapy / Conversations -----------------------------
+aiaph:LingraphicaTalkPath a aiaph:AITool ;
+    aiaph:toolName "Lingraphica TalkPath Therapy / Conversations" ;
+    aiaph:developer "Lingraphica" ;
+    aiaph:releaseYear "2013"^^xsd:integer ;
+    aiaph:toolDescription "Piattaforma online/app con oltre 13.500 esercizi linguistici e cognitivi per la pratica quotidiana autonoma, e 'Conversations', una funzione più recente che dichiara di usare l'IA per supportare conversazioni reali; l'azienda produce anche dispositivi AAC dedicati per persone con afasia e afasia progressiva primaria."@it ;
+    aiaph:sourceURL <https://lingraphica.com/talkpath-therapy-aphasia-app/> ;
+    aiaph:employsTechnique aiaph:AdaptiveLearningAlgorithm ;
+    aiaph:toolCategory "AAC"@it .
+
+aiaph:ca_LingraphicaTalkPath a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:LingraphicaTalkPath ;
+    aiaph:applicationDescription "Pratica quotidiana autonoma per il mantenimento e il recupero di abilità linguistiche e cognitive, integrata con dispositivi AAC per la comunicazione funzionale; l'azienda dichiara pubblicamente collaborazioni di ricerca ma non sono state reperite qui pubblicazioni RCT indipendenti sulla componente IA specifica ('Conversations')."@it ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain , aiaph:PragmaticDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level5_InformalClinicalUse ;
+    aiaph:hasLimitation aiaph:lim_lingraphica_1 .
+aiaph:lim_lingraphica_1 a aiaph:ConstructValidityLimitation ;
+    aiaph:limitationNote "Materiale prevalentemente promozionale dell'azienda produttrice; evidenza indipendente e pubblicata sulla componente IA specifica non è stata reperita in questa ricerca."@it .
+
+### 29. SpeakNow - prototipo culturalmente adattivo per Singapore ----------------
+aiaph:SpeakNowPrototype a aiaph:AITool ;
+    aiaph:toolName "SpeakNow" ;
+    aiaph:developer "Niculescu, Ehnes, Dong / Lim (A*STAR Institute for Infocomm Research, Singapore)" ;
+    aiaph:releaseYear "2026"^^xsd:integer ;
+    aiaph:toolDescription "Piattaforma web di terapia del linguaggio con interfacce separate per paziente e caregiver/terapista, esercizi personalizzabili su base culturale e linguistica locale (Singapore), riconoscimento vocale adattato all'accento locale, punteggio di pronuncia tramite Dynamic Time Warping, e gamification per l'aderenza."@it ;
+    aiaph:sourceURL <https://arxiv.org/pdf/2603.22357> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition , aiaph:DynamicTimeWarpingAlignment , aiaph:AdaptiveLearningAlgorithm ;
+    aiaph:toolCategory "Terapia adattiva"@it .
+
+aiaph:ca_SpeakNow a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:SpeakNowPrototype ;
+    aiaph:applicationDescription "Progettato a partire da uno studio etnografico con logopedisti dell'ospedale Tan Tock Seng; affronta esplicitamente il problema dei sistemi ASR occidentali che falliscono su accenti non americani e di materiali terapeutici culturalmente irrilevanti. Gli stessi autori dichiarano che il prototipo è stato validato concettualmente e tecnicamente ma NON ANCORA testato con pazienti reali."@it ;
+    aiaph:addressesModality aiaph:OralProduction , aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_speaknow_1 .
+aiaph:lim_speaknow_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Dichiarato esplicitamente dagli stessi autori (Niculescu et al., 2026): 'sebbene i nostri prototipi siano stati validati concettualmente e tecnicamente, non sono ancora stati testati con pazienti'. Un caso paradigmatico della distanza tra prototipo tecnico e validazione clinica nel campo."@it .
+
+### 30. Predizione del recupero in afasia bilingue ------------------------------
+aiaph:BilingualRecoveryPrediction a aiaph:AITool ;
+    aiaph:toolName "Modello di machine learning per la predizione del recupero in afasia bilingue post-ictus" ;
+    aiaph:developer "Ricerca accademica, pubblicato su Stroke (AHA Journals), 2025" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Sei algoritmi di machine learning addestrati su 16 feature curate (demografia, abilità linguistiche, cognizione, esperienza bilingue) per predire responder vs non-responder al trattamento in persone bilingue spagnolo-inglese con afasia post-ictus."@it ;
+    aiaph:sourceURL <https://www.ahajournals.org/doi/10.1161/STROKEAHA.124.047867> ;
+    aiaph:employsTechnique aiaph:PredictiveOutcomeModeling ;
+    aiaph:toolCategory "Predizione prognostica"@it .
+
+aiaph:ca_BilingualPrediction a aiaph:PrognosticApplication ;
+    aiaph:isApplicationOf aiaph:BilingualRecoveryPrediction ;
+    aiaph:applicationDescription "Primo studio a mostrare che severità e demografia predicono gli esiti del trattamento specificamente in una popolazione ispanica/latina sotto-rappresentata negli studi sull'afasia, con implicazioni dirette per la pianificazione clinica di una fascia di popolazione in rapida crescita negli Stati Uniti."@it ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Modelli con feature di neuroimaging: F1=0,941 (Support Vector Classifier), F1=0,873 (Random Forest) — i migliori risultati tra i modelli testati" ;
+    aiaph:hasLimitation aiaph:lim_bilingual_1 .
+aiaph:lim_bilingual_1 a aiaph:DataLimitation ;
+    aiaph:limitationNote "Popolazione limitata a bilingui spagnolo-inglese; la generalizzazione ad altre coppie linguistiche, sotto-rappresentate quanto o più di questa, non è garantita."@it .
+
+### 31. Predizione multimodale della gravità (SVR/RF su neuroimmagini) ----------
+aiaph:MultimodalSeverityPrediction a aiaph:AITool ;
+    aiaph:toolName "Predizione multimodale della gravità afasica (WAB-R AQ) da neuroimmagini" ;
+    aiaph:developer "Ricerca accademica (PubMed, 2025)" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Modelli di Support Vector Regression e Random Forest addestrati su T1 strutturale, Diffusion Tensor Imaging e fMRI a riposo per predire il punteggio di gravità WAB-R Aphasia Quotient in 76 persone con afasia post-ictus."@it ;
+    aiaph:sourceURL <https://pubmed.ncbi.nlm.nih.gov/40554033/> ;
+    aiaph:employsTechnique aiaph:SupportVectorRegression , aiaph:RandomForestRegression , aiaph:MultimodalNeuroimagingML ;
+    aiaph:toolCategory "Predizione prognostica"@it .
+
+aiaph:ca_SeverityMultimodal a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:MultimodalSeverityPrediction ;
+    aiaph:applicationDescription "Il modello SVR supera il Random Forest (RMSE 16,38 vs 18,41; r di Pearson 0,70 vs 0,66); attività neurale a riposo e integrità strutturale emergono come predittori più informativi della gravità afasica rispetto a modalità singole."@it ;
+    aiaph:addressesModality aiaph:OralProduction , aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "n=76; SVR: RMSE 16,38±5,57, r=0,70±0,13, MAE 12,67±3,27 (2025)" ;
+    aiaph:hasLimitation aiaph:lim_severitymm_1 .
+aiaph:lim_severitymm_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Richiede acquisizione multimodale di risonanza magnetica (T1, DTI, fMRI a riposo), non disponibile nella pratica clinica di routine nella maggior parte dei contesti."@it .
+
+### 32. Stima della gravità da caratteristiche del discorso ---------------------
+aiaph:DiscourseBasedAQEstimation a aiaph:AITool ;
+    aiaph:toolName "Stima della gravità afasica (AQ) da caratteristiche del discorso spontaneo" ;
+    aiaph:developer "Ricerca accademica (ScienceDirect/PMC, 2024)" ;
+    aiaph:releaseYear "2024"^^xsd:integer ;
+    aiaph:toolDescription "Modello di machine learning addestrato su feature di microstruttura del discorso, estratte da tre prompt di AphasiaBank (descrizione di immagine, narrazione, discorso procedurale), per stimare il punteggio WAB-R AQ senza somministrare il test completo."@it ;
+    aiaph:sourceURL <https://pmc.ncbi.nlm.nih.gov/articles/PMC11016805/> ;
+    aiaph:employsTechnique aiaph:NaturalLanguageProcessing , aiaph:PredictiveOutcomeModeling ;
+    aiaph:toolCategory "Diagnosi/Classificazione"@it .
+
+aiaph:ca_DiscourseAQ a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:DiscourseBasedAQEstimation ;
+    aiaph:applicationDescription "I modelli basati sul discorso stimano bene l'AQ e superano quelli basati solo su dati lesionali; l'aggiunta di feature lesionali non migliora sostanzialmente le prestazioni. Utile per monitoraggio remoto in popolazioni con accesso limitato a clinici formati (es. aree rurali)."@it ;
+    aiaph:addressesLinguisticDomain aiaph:PragmaticDomain , aiaph:SyntacticMorphologicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "n=71 sopravvissuti a ictus con neuroimaging strutturale disponibile (2024)" ;
+    aiaph:hasLimitation aiaph:lim_discourseaq_1 .
+aiaph:lim_discourseaq_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Campione di ricerca monocentrico; non ancora integrato in un flusso di lavoro clinico di screening remoto su larga scala."@it .
+
+### 33. BCI P300 per naming e ripetizione ----------------------------------------
+aiaph:P300BCIRehabilitation a aiaph:AITool ;
+    aiaph:toolName "BCI basata su paradigma visivo P300 per la riabilitazione dell'afasia" ;
+    aiaph:developer "Ricerca accademica, rassegna in Proceedings BEFS 2025 (SCITEPRESS)" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Sistema BCI che sfrutta il paradigma P300 (un potenziale evento-relato EEG) per fornire feedback in tempo reale durante compiti di denominazione e ripetizione di frasi, talvolta integrato con realtà virtuale e stimolazione cerebrale non invasiva."@it ;
+    aiaph:sourceURL <https://www.scitepress.org/Papers/2025/142995/142995.pdf> ;
+    aiaph:employsTechnique aiaph:EEGNeurofeedbackDecoding ;
+    aiaph:toolCategory "BCI/Neuroprotesi"@it .
+
+aiaph:ca_P300BCI a aiaph:TherapeuticApplication ;
+    aiaph:isApplicationOf aiaph:P300BCIRehabilitation ;
+    aiaph:applicationDescription "Rassegna di studi preliminari su training P300-BCI per il miglioramento di denominazione e ripetizione; gli autori segnalano affidabilità del segnale, privacy dei dati, costo e accessibilità come le principali barriere all'adozione clinica su larga scala."@it ;
+    aiaph:targetsAphasiaType aiaph:AnomicAphasia , aiaph:ConductionAphasia ;
+    aiaph:addressesLinguisticDomain aiaph:SemanticLexicalDomain ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:hasLimitation aiaph:lim_p300_1 .
+aiaph:lim_p300_1 a aiaph:AccessibilityLimitation ;
+    aiaph:limitationNote "Costo dei dispositivi EEG, affidabilità del segnale e barriere di accesso restano ostacoli espliciti all'adozione clinica diffusa, secondo la stessa rassegna che documenta lo strumento."@it .
+
+# EOF
+
+#################################################################
+# 13. META-ANALISI STATISTICA: IA COMPORTAMENTALE vs COVERT/CONSCIENTIAL
+#################################################################
+# Questa sezione formalizza nel grafo la meta-analisi discussa nel documento
+# "meta-analysis-direction.md": non è più un calcolo esterno, ma un livello
+# di conoscenza interrogabile via SPARQL.
+
+### 13.1 Lo strato di elaborazione (dimensione ortogonale a tecnica/applicazione)
+
+aiaph:ProcessingLayer a owl:Class ;
+    rdfs:label "Strato di elaborazione"@it ;
+    rdfs:comment "Distingue se uno strumento IA opera sul comportamento linguistico osservabile (output prodotto, per quanto imperfetto) o tenta di accedere al segnale neurale covert durante il linguaggio interiore/immaginato, prima o a prescindere dal canale articolatorio. Dimensione ortogonale rispetto a TherapeuticApplication/DiagnosticApplication/ecc. e a AITechnique."@it .
+
+aiaph:SurfaceBehavioralLayer a aiaph:ProcessingLayer , owl:NamedIndividual ;
+    rdfs:label "Strato comportamentale/di superficie"@it ;
+    rdfs:comment "Lo strumento classifica, genera o predice a partire da un segnale osservabile: parlato prodotto, testo, punteggio clinico, imaging strutturale/funzionale usato come proxy indiretto."@it .
+
+aiaph:CovertConscientialLayer a aiaph:ProcessingLayer , owl:NamedIndividual ;
+    rdfs:label "Strato covert/consciential"@it ;
+    rdfs:comment "Lo strumento decodifica direttamente dal segnale neurale acquisito durante un compito di linguaggio interiore/immaginato (inner/imagined speech), tentando di accedere all'evento cosciente linguistico a monte o a prescindere dal canale articolatorio."@it .
+
+aiaph:operatesOnLayer a owl:ObjectProperty ;
+    rdfs:domain aiaph:AITool ; rdfs:range aiaph:ProcessingLayer ;
+    rdfs:label "opera sullo strato"@it .
+
+### 13.2 Misura di effect size reificata (Cohen's h vs baseline di chance)
+
+aiaph:EffectSizeMeasurement a owl:Class ;
+    rdfs:label "Misura di effect size"@it ;
+    rdfs:comment "Reifica il calcolo di un effect size standardizzato (Cohen's h) per una singola applicazione clinica, a partire da accuratezza, N e livello di chance dichiarati nella fonte. h = 2·arcsin(√p_osservata) − 2·arcsin(√p_chance); varianza campionaria ≈ 1/N."@it .
+
+aiaph:hasEffectSizeMeasurement a owl:ObjectProperty ;
+    rdfs:domain aiaph:ClinicalApplication ; rdfs:range aiaph:EffectSizeMeasurement ;
+    rdfs:label "ha misura di effect size"@it .
+
+aiaph:accuracyValue a owl:DatatypeProperty ; rdfs:domain aiaph:EffectSizeMeasurement ; rdfs:range xsd:decimal ;
+    rdfs:label "valore di accuratezza"@it .
+aiaph:sampleSize a owl:DatatypeProperty ; rdfs:domain aiaph:EffectSizeMeasurement ; rdfs:range xsd:integer ;
+    rdfs:label "dimensione campionaria (N)"@it .
+aiaph:chanceLevel a owl:DatatypeProperty ; rdfs:domain aiaph:EffectSizeMeasurement ; rdfs:range xsd:decimal ;
+    rdfs:label "livello di chance"@it .
+aiaph:cohensH a owl:DatatypeProperty ; rdfs:domain aiaph:EffectSizeMeasurement ; rdfs:range xsd:decimal ;
+    rdfs:label "Cohen's h"@it .
+aiaph:standardError a owl:DatatypeProperty ; rdfs:domain aiaph:EffectSizeMeasurement ; rdfs:range xsd:decimal ;
+    rdfs:label "errore standard"@it .
+aiaph:chanceLevelAssumption a owl:AnnotationProperty ;
+    rdfs:label "assunzione sul livello di chance"@it ;
+    rdfs:comment "Usata quando il livello di chance non è dichiarato esplicitamente nella fonte primaria ed è stato stimato; rende l'assunzione tracciabile nel grafo invece che implicita."@it .
+
+### 13.3 Pool meta-analitico (effetti casuali, DerSimonian-Laird) e confronto tra famiglie
+
+aiaph:MetaAnalyticPool a owl:Class ;
+    rdfs:label "Pool meta-analitico"@it ;
+    rdfs:comment "Il risultato aggregato a effetti casuali (DerSimonian-Laird) per un insieme di EffectSizeMeasurement appartenenti allo stesso ProcessingLayer."@it .
+
+aiaph:aggregatesMeasurement a owl:ObjectProperty ;
+    rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range aiaph:EffectSizeMeasurement ;
+    rdfs:label "aggrega la misura"@it .
+aiaph:pooledH a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range xsd:decimal .
+aiaph:ciLower a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range xsd:decimal .
+aiaph:ciUpper a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range xsd:decimal .
+aiaph:kStudies a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range xsd:integer .
+aiaph:qStatistic a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range xsd:decimal .
+aiaph:tau2 a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range xsd:decimal .
+aiaph:iSquared a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalyticPool ; rdfs:range xsd:decimal ;
+    rdfs:comment "Percentuale di eterogeneità residua non spiegata dal solo errore campionario."@it .
+
+aiaph:MetaAnalysisComparison a owl:Class ;
+    rdfs:label "Confronto meta-analitico tra pool"@it .
+aiaph:comparesPool a owl:ObjectProperty ; rdfs:domain aiaph:MetaAnalysisComparison ; rdfs:range aiaph:MetaAnalyticPool .
+aiaph:differenceH a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalysisComparison ; rdfs:range xsd:decimal .
+aiaph:zScore a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalysisComparison ; rdfs:range xsd:decimal .
+aiaph:pValue a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalysisComparison ; rdfs:range xsd:decimal .
+aiaph:isStatisticallySignificant a owl:DatatypeProperty ; rdfs:domain aiaph:MetaAnalysisComparison ; rdfs:range xsd:boolean .
+
+# EOF
+
+#################################################################
+# 14. I 9 STUDI DELLA META-ANALISI: NUOVI STRUMENTI + MISURE DI EFFECT SIZE
+#################################################################
+
+### 34. SONIVA — rilevamento ictus da embedding Whisper -------------------------
+aiaph:SONIVAStrokeDetection a aiaph:AITool ;
+    aiaph:toolName "SONIVA - rilevamento ictus da embedding Whisper" ;
+    aiaph:developer "Ricerca accademica (2025)" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Classificatore binario ictus/non-ictus basato su embedding vocali estratti da un modello Whisper, su un ampio database di pazienti."@it ;
+    aiaph:sourceURL <https://www.researchgate.net/publication/392430279_SONIVA_Speech_recOgNItion_Validation_in_Aphasia> ;
+    aiaph:employsTechnique aiaph:AutomaticSpeechRecognition , aiaph:DeepLearningClassifier ;
+    aiaph:operatesOnLayer aiaph:SurfaceBehavioralLayer ;
+    aiaph:toolCategory "Diagnosi/Classificazione"@it .
+
+aiaph:ca_SONIVA a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:SONIVAStrokeDetection ;
+    aiaph:applicationDescription "Rilevamento automatico di ictus (di cui l'afasia è una delle conseguenze più frequenti) da embedding vocali su circa 600 pazienti."@it ;
+    aiaph:addressesModality aiaph:OralProduction ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza 93%, N≈600, task binario (chance 50%)" ;
+    aiaph:hasEffectSizeMeasurement aiaph:es_SONIVA ;
+    aiaph:hasLimitation aiaph:lim_soniva_1 .
+aiaph:lim_soniva_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Rileva l'ictus in generale, non l'afasia specificamente; la composizione esatta del campione (pazienti con vs senza afasia) non è chiara dalla sola fonte secondaria consultata."@it .
+aiaph:es_SONIVA a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.93"^^xsd:decimal ; aiaph:sampleSize 600 ; aiaph:chanceLevel "0.50"^^xsd:decimal ;
+    aiaph:cohensH "1.035"^^xsd:decimal ; aiaph:standardError "0.041"^^xsd:decimal .
+
+### 35. SVM su neural tracking EEG (De Clercq et al. 2024) -----------------------
+aiaph:EEGNeuralTrackingSVM a aiaph:AITool ;
+    aiaph:toolName "SVM su neural tracking EEG per il rilevamento dell'afasia" ;
+    aiaph:developer "De Clercq et al. (2024)" ;
+    aiaph:releaseYear "2024"^^xsd:integer ;
+    aiaph:toolDescription "Classificatore SVM addestrato su misure di 'neural tracking' del parlato continuo estratte da EEG, per distinguere persone con afasia da controlli sani."@it ;
+    aiaph:sourceURL <https://pubmed.ncbi.nlm.nih.gov/40039757/> ;
+    aiaph:employsTechnique aiaph:SupportVectorMachineClassifier ;
+    aiaph:operatesOnLayer aiaph:SurfaceBehavioralLayer ;
+    aiaph:toolCategory "Diagnosi/Classificazione"@it .
+
+aiaph:ca_EEGNeuralTracking a aiaph:DiagnosticApplication ;
+    aiaph:isApplicationOf aiaph:EEGNeuralTrackingSVM ;
+    aiaph:applicationDescription "Rilevamento dell'afasia da misure di neural tracking EEG durante ascolto di parlato continuo, su 26 persone con afasia e 22 controlli."@it ;
+    aiaph:addressesModality aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza 85,4%, N=48 (26 IWA + 22 controlli), task binario (chance 50%)" ;
+    aiaph:hasEffectSizeMeasurement aiaph:es_EEGNeuralTracking ;
+    aiaph:hasLimitation aiaph:lim_eegtracking_1 .
+aiaph:lim_eegtracking_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Campione piccolo (N=48); il neural tracking richiede attrezzatura EEG e non è una misura di screening immediata."@it .
+aiaph:es_EEGNeuralTracking a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.854"^^xsd:decimal ; aiaph:sampleSize 48 ; aiaph:chanceLevel "0.50"^^xsd:decimal ;
+    aiaph:cohensH "0.787"^^xsd:decimal ; aiaph:standardError "0.144"^^xsd:decimal .
+
+### 36. LSTM+WST su comandi immaginati -------------------------------------------
+aiaph:LSTMImaginedCommands a aiaph:AITool ;
+    aiaph:toolName "LSTM + Wavelet Scattering Transform su comandi immaginati" ;
+    aiaph:developer "Ricerca accademica (PMC 2023)" ;
+    aiaph:releaseYear "2023"^^xsd:integer ;
+    aiaph:toolDescription "Rete LSTM con estrazione di feature tramite wavelet scattering transform, per classificare 4 comandi di linguaggio immaginato (imagined speech) da EEG."@it ;
+    aiaph:sourceURL <https://pmc.ncbi.nlm.nih.gov/articles/PMC10295790/> ;
+    aiaph:employsTechnique aiaph:NonInvasiveEEGBCI , aiaph:DeepLearningClassifier ;
+    aiaph:operatesOnLayer aiaph:CovertConscientialLayer ;
+    aiaph:toolCategory "Neurofeedback"@it .
+
+aiaph:ca_LSTMImaginedCommands a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:LSTMImaginedCommands ;
+    aiaph:applicationDescription "Decodifica di 4 comandi di linguaggio immaginato da segnale EEG, task di classificazione a 4 classi."@it ;
+    aiaph:addressesModality aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza 92,5%, N=4, task a 4 classi (chance 25%)" ;
+    aiaph:hasEffectSizeMeasurement aiaph:es_LSTMImaginedCommands ;
+    aiaph:hasLimitation aiaph:lim_lstmimg_1 .
+aiaph:lim_lstmimg_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "N=4: dimostrazione di fattibilità, non generalizzabile; nessun partecipante con afasia incluso."@it .
+aiaph:es_LSTMImaginedCommands a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.9250"^^xsd:decimal ; aiaph:sampleSize 4 ; aiaph:chanceLevel "0.25"^^xsd:decimal ;
+    aiaph:cohensH "1.540"^^xsd:decimal ; aiaph:standardError "0.500"^^xsd:decimal .
+
+### 37. EEG-Transformer su 13 classi immaginate ----------------------------------
+aiaph:EEGTransformer13Class a aiaph:AITool ;
+    aiaph:toolName "EEG-Transformer per la classificazione di 13 classi di linguaggio immaginato" ;
+    aiaph:developer "Ricerca accademica (arXiv 2021)" ;
+    aiaph:releaseYear "2021"^^xsd:integer ;
+    aiaph:toolDescription "Architettura transformer applicata a segnale EEG per classificare 13 categorie di parole/comandi immaginati, confrontata anche con la condizione di parlato overt."@it ;
+    aiaph:sourceURL <https://arxiv.org/abs/2112.09239> ;
+    aiaph:employsTechnique aiaph:NonInvasiveEEGBCI , aiaph:DeepLearningClassifier ;
+    aiaph:operatesOnLayer aiaph:CovertConscientialLayer ;
+    aiaph:toolCategory "Neurofeedback"@it .
+
+aiaph:ca_EEGTransformer13 a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:EEGTransformer13Class ;
+    aiaph:applicationDescription "Classificazione a 13 classi di linguaggio immaginato da EEG; le prestazioni sulla condizione immaginata sono nettamente inferiori a quelle sulla condizione di parlato overt nello stesso studio."@it ;
+    aiaph:addressesModality aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza 35,1% (immaginato) vs 49,5% (overt), N=9, task a 13 classi (chance 7,7%)" ;
+    aiaph:hasEffectSizeMeasurement aiaph:es_EEGTransformer13 ;
+    aiaph:hasLimitation aiaph:lim_eegtrans13_1 .
+aiaph:lim_eegtrans13_1 a aiaph:ConstructValidityLimitation ;
+    aiaph:limitationNote "Il netto divario tra condizione immaginata e condizione overt nello stesso studio mostra che il linguaggio immaginato è sistematicamente più difficile da decodificare del parlato reale, anche a parità di partecipanti e task."@it .
+aiaph:es_EEGTransformer13 a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.3507"^^xsd:decimal ; aiaph:sampleSize 9 ; aiaph:chanceLevel "0.0769"^^xsd:decimal ;
+    aiaph:cohensH "0.706"^^xsd:decimal ; aiaph:standardError "0.333"^^xsd:decimal .
+
+### 38. EEG monocanale su caratteri cinesi immaginati ----------------------------
+aiaph:SingleChannelEEGChinese a aiaph:AITool ;
+    aiaph:toolName "EEG monocanale per la decodifica di caratteri cinesi immaginati" ;
+    aiaph:developer "Ricerca accademica (2026)" ;
+    aiaph:releaseYear "2026"^^xsd:integer ;
+    aiaph:toolDescription "Decodifica binaria di caratteri cinesi immaginati da un singolo canale EEG (miglior canale: CP5), pensata per setup a basso costo/alta accessibilità."@it ;
+    aiaph:sourceURL <https://www.sciencedirect.com/science/article/pii/S2589238X2600001X> ;
+    aiaph:employsTechnique aiaph:NonInvasiveEEGBCI ;
+    aiaph:operatesOnLayer aiaph:CovertConscientialLayer ;
+    aiaph:toolCategory "Neurofeedback"@it .
+
+aiaph:ca_SingleChannelEEGChinese a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:SingleChannelEEGChinese ;
+    aiaph:applicationDescription "Classificazione binaria di caratteri cinesi immaginati da singolo canale EEG (CP5), con l'obiettivo di ridurre il costo/la complessità dell'hardware rispetto a montature EEG multicanale."@it ;
+    aiaph:addressesModality aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza 74,3% (canale CP5), N=4, task binario (chance 50%)" ;
+    aiaph:hasEffectSizeMeasurement aiaph:es_SingleChannelEEGChinese ;
+    aiaph:hasLimitation aiaph:lim_singlech_1 .
+aiaph:lim_singlech_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "N=4; la riduzione a singolo canale sacrifica accuratezza rispetto ai setup multicanale, un compromesso esplicito accessibilità/prestazioni."@it .
+aiaph:es_SingleChannelEEGChinese a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.7433"^^xsd:decimal ; aiaph:sampleSize 4 ; aiaph:chanceLevel "0.50"^^xsd:decimal ;
+    aiaph:cohensH "0.508"^^xsd:decimal ; aiaph:standardError "0.500"^^xsd:decimal .
+
+### 39. EEGNet su 5 parole spagnole immaginate -----------------------------------
+aiaph:EEGNetSpanishWords a aiaph:AITool ;
+    aiaph:toolName "EEGNet per la classificazione di 5 parole spagnole immaginate" ;
+    aiaph:developer "Ricerca accademica (PMC 2025)" ;
+    aiaph:releaseYear "2025"^^xsd:integer ;
+    aiaph:toolDescription "Rete EEGNet applicata alla classificazione intra-soggetto di 5 parole spagnole immaginate, confrontando condizione pronunciata e immaginata su partecipanti sani."@it ;
+    aiaph:sourceURL <https://pmc.ncbi.nlm.nih.gov/articles/PMC12245923/> ;
+    aiaph:employsTechnique aiaph:NonInvasiveEEGBCI , aiaph:DeepLearningClassifier ;
+    aiaph:operatesOnLayer aiaph:CovertConscientialLayer ;
+    aiaph:toolCategory "Neurofeedback"@it .
+
+aiaph:ca_EEGNetSpanish a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:EEGNetSpanishWords ;
+    aiaph:applicationDescription "Classificazione intra-soggetto a 5 classi di parole spagnole immaginate; 10 dei 24 partecipanti hanno superato il 70% di accuratezza nella sola condizione immaginata."@it ;
+    aiaph:addressesModality aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza media 30,4% (condizione immaginata, intra-soggetto), N=24, task a 5 classi (chance 20%)" ;
+    aiaph:hasEffectSizeMeasurement aiaph:es_EEGNetSpanish ;
+    aiaph:hasLimitation aiaph:lim_eegnetsp_1 .
+aiaph:lim_eegnetsp_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Ampia variabilità inter-soggetto (solo 10/24 sopra il 70%); nessun partecipante con afasia incluso, popolazione sana."@it .
+aiaph:es_EEGNetSpanish a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.3040"^^xsd:decimal ; aiaph:sampleSize 24 ; aiaph:chanceLevel "0.20"^^xsd:decimal ;
+    aiaph:cohensH "0.241"^^xsd:decimal ; aiaph:standardError "0.204"^^xsd:decimal .
+
+### 40. CNNeeg1-1 su 5 vocali immaginate ------------------------------------------
+aiaph:CNNeeg11Vowels a aiaph:AITool ;
+    aiaph:toolName "CNNeeg1-1 per la classificazione di 5 vocali immaginate" ;
+    aiaph:developer "Ricerca accademica (Sensors 2021)" ;
+    aiaph:releaseYear "2021"^^xsd:integer ;
+    aiaph:toolDescription "Rete convoluzionale (CNNeeg1-1) per il riconoscimento di segnali EEG corrispondenti a 5 vocali immaginate (a,e,i,o,u), validata su un dataset proprio (BD2) di 50 soggetti."@it ;
+    aiaph:sourceURL <https://doi.org/10.3390/s21196503> ;
+    aiaph:employsTechnique aiaph:NonInvasiveEEGBCI , aiaph:DeepLearningClassifier ;
+    aiaph:operatesOnLayer aiaph:CovertConscientialLayer ;
+    aiaph:toolCategory "Neurofeedback"@it .
+
+aiaph:ca_CNNeeg11Vowels a aiaph:AssistiveApplication ;
+    aiaph:isApplicationOf aiaph:CNNeeg11Vowels ;
+    aiaph:applicationDescription "Classificazione a 5 classi di vocali immaginate da EEG, il risultato più solido tra gli studi covert/consciential inclusi nella meta-analisi grazie al campione relativamente ampio (N=50)."@it ;
+    aiaph:addressesModality aiaph:OralComprehension ;
+    aiaph:hasEvidenceLevel aiaph:Level4_ExperimentalPrototype ;
+    aiaph:reportedMetric "Accuratezza 85,7% (dataset BD2), N=50, task a 5 classi (chance 20%)" ;
+    aiaph:hasEffectSizeMeasurement aiaph:es_CNNeeg11Vowels ;
+    aiaph:hasLimitation aiaph:lim_cnneeg_1 .
+aiaph:lim_cnneeg_1 a aiaph:GeneralizabilityLimitation ;
+    aiaph:limitationNote "Nessun partecipante con afasia; le vocali immaginate sono un task più semplice della decodifica lessicale piena."@it .
+aiaph:es_CNNeeg11Vowels a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.8566"^^xsd:decimal ; aiaph:sampleSize 50 ; aiaph:chanceLevel "0.20"^^xsd:decimal ;
+    aiaph:cohensH "1.438"^^xsd:decimal ; aiaph:standardError "0.141"^^xsd:decimal .
+
+### Misure di effect size per i 2 strumenti già esistenti nel grafo -------------
+aiaph:ca_DutchSVM aiaph:hasEffectSizeMeasurement aiaph:es_DutchSVM .
+aiaph:DutchASRSVMClassifier aiaph:operatesOnLayer aiaph:SurfaceBehavioralLayer .
+aiaph:es_DutchSVM a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.866"^^xsd:decimal ; aiaph:sampleSize 119 ; aiaph:chanceLevel "0.50"^^xsd:decimal ;
+    aiaph:cohensH "0.821"^^xsd:decimal ; aiaph:standardError "0.092"^^xsd:decimal .
+
+aiaph:ca_PLORAS aiaph:hasEffectSizeMeasurement aiaph:es_PLORAS .
+aiaph:PLORASProject aiaph:operatesOnLayer aiaph:SurfaceBehavioralLayer .
+aiaph:es_PLORAS a aiaph:EffectSizeMeasurement ;
+    aiaph:accuracyValue "0.80"^^xsd:decimal ; aiaph:sampleSize 758 ; aiaph:chanceLevel "0.33"^^xsd:decimal ;
+    aiaph:cohensH "0.990"^^xsd:decimal ; aiaph:standardError "0.036"^^xsd:decimal ;
+    aiaph:chanceLevelAssumption "Livello di chance stimato assumendo 3 categorie di esito, non specificate con precisione nell'abstract disponibile; assunzione dichiarata, non verificata sul full text."@it .
+
+#################################################################
+# 15. POOL META-ANALITICI E CONFRONTO FINALE
+#################################################################
+
+aiaph:metaPool_SurfaceBehavioral a aiaph:MetaAnalyticPool ;
+    rdfs:label "Pool meta-analitico — Famiglia comportamentale/di superficie"@it ;
+    aiaph:aggregatesMeasurement aiaph:es_DutchSVM , aiaph:es_SONIVA , aiaph:es_PLORAS , aiaph:es_EEGNeuralTracking ;
+    aiaph:pooledH "0.962"^^xsd:decimal ; aiaph:ciLower "0.873"^^xsd:decimal ; aiaph:ciUpper "1.051"^^xsd:decimal ;
+    aiaph:kStudies 4 ; aiaph:iSquared "54.5"^^xsd:decimal .
+
+aiaph:metaPool_CovertConsciential a aiaph:MetaAnalyticPool ;
+    rdfs:label "Pool meta-analitico — Famiglia covert/consciential"@it ;
+    aiaph:aggregatesMeasurement aiaph:es_LSTMImaginedCommands , aiaph:es_EEGTransformer13 , aiaph:es_SingleChannelEEGChinese , aiaph:es_EEGNetSpanish , aiaph:es_CNNeeg11Vowels ;
+    aiaph:pooledH "0.878"^^xsd:decimal ; aiaph:ciLower "0.249"^^xsd:decimal ; aiaph:ciUpper "1.507"^^xsd:decimal ;
+    aiaph:kStudies 5 ; aiaph:iSquared "84.8"^^xsd:decimal .
+
+aiaph:comparison_SurfaceVsCovert a aiaph:MetaAnalysisComparison ;
+    rdfs:label "Confronto: comportamentale vs covert/consciential"@it ;
+    rdfs:comment "Ricerca bibliografica su 9 studi (k=4 comportamentali, k=5 covert/consciential) con accuratezza, N e livello di chance dichiarati; Kunz et al. 2025 (Cell) escluso per decodifica a vocabolario aperto non comparabile a un chance-level chiuso."@it ;
+    aiaph:comparesPool aiaph:metaPool_SurfaceBehavioral , aiaph:metaPool_CovertConsciential ;
+    aiaph:differenceH "0.084"^^xsd:decimal ; aiaph:zScore "0.26"^^xsd:decimal ; aiaph:pValue "0.796"^^xsd:decimal ;
+    aiaph:isStatisticallySignificant "false"^^xsd:boolean .
+
+#################################################################
+# 16. PATTERN DI PROGETTAZIONE (ODP) RIUSATI E SCELTE DI MODELLAZIONE
+#
+# Sezione dichiarativa: nomina esplicitamente i pattern di progettazione
+# ontologica (Ontology Design Pattern) riusati, sul modello della prassi
+# di citazione della Cognitive Bias ontology (Classification ODP +
+# motivazione esplicita della scelta classe-vs-individuo). Senza questa
+# sezione i pattern restano impliciti nelle sole scelte di modellazione;
+# qui sono resi interrogabili e citabili.
+#################################################################
+
+aiaph:designPatternNote a owl:AnnotationProperty ;
+    rdfs:label "nota sul pattern di progettazione"@it .
+aiaph:modelingChoiceRationale a owl:AnnotationProperty ;
+    rdfs:label "motivazione della scelta di modellazione"@it .
+
+aiaph: aiaph:designPatternNote
+    "(1) N-ARY RELATION / DESCRIPTIONS&SITUATIONS (DnS) — aiaph:ClinicalApplication reifica l'uso di un aiaph:AITool su un target clinico, invece di una tripla diretta AITool-targetsAphasiaType-AphasiaType: e' il pattern ODP standard per relazioni che portano piu' di due argomenti (qui: strumento, sottotipo, dominio linguistico, modalita', evidenza, limiti), e nell'ontologia e' ancorato esplicitamente a dul:Situation/dul:Description in §1c."@it ,
+    "(2) CLASSIFICATION ODP — aiaph:AphasiaType (e la sua estensione via dul:Concept in §1c) classifica un profilo clinico sotto una categoria diagnostica, non descrive un oggetto fisico: e' lo stesso pattern con cui la Cognitive Bias ontology tratta ogni bias come un dul:Concept-like Concept invece che come un evento o una qualita'."@it ,
+    "(3) TASSONOMIA ORTOGONALE (pattern 'Collection'/divergenza) — aiaph:Limitation e' partizionata in sei sottoclassi disgiunte (§8) che tagliano trasversalmente la tassonomia clinica: una stessa ClinicalApplication puo' avere limiti di piu' nature contemporaneamente, trattati come dato analitico piuttosto che come errori di adattamento."@it ,
+    "(4) CLASSE DEFINITA PER RICONOSCIMENTO AUTOMATICO — aiaph:UndifferentiatedByAphasiaSubtype/aiaph:DifferentiatedByAphasiaSubtype (§1b) non sono asserite ma derivate da owl:equivalentClass + restrizione di cardinalita': e' una classificazione guidata dal reasoner via equivalenza, non da domain/range o da annotazione manuale."@it ,
+    "(5) PROPERTY CHAIN PER NAVIGAZIONE DERIVATA — aiaph:toolTargetsAphasiaType (§9b) e' una proprieta' derivata via owl:propertyChainAxiom che compone hasClinicalApplication (inversa di isApplicationOf) con targetsAphasiaType, analoga alle query a percorso di proprieta' (sequenza '/', inversione '^') usate nelle competency question SPARQL — qui il percorso e' assiomatizzato anche a livello di reasoner, non solo di query."@it .
+
+aiaph:AphasiaType aiaph:modelingChoiceRationale
+    "Le sindromi foglia (Broca, Wernicke, svPPA, ecc.) sono modellate come CLASSI, non solo come individui, perche' portano struttura interna interrogabile dal reasoner: partecipano a gerarchie rdfs:subClassOf (NonFluent/Fluent, PostStroke/PPA), ad assiomi di disgiunzione (owl:AllDisjointClasses in §2 e §2b) e sono il range di manifestsSymptom. Sono anche rese owl:NamedIndividual (punning, §2c) perche' la stessa sindrome serve pure come VALORE della proprieta' targetsAphasiaType su una ClinicalApplication. Questa doppia natura (classe quando si ragiona sulla tassonomia, individuo quando si etichetta un uso specifico) e' la stessa ragione per cui la Cognitive Bias ontology modella ogni bias come classe invece che come semplice individuo: entrambe le categorie hanno una granularita' interna (sottotipi, criteri distintivi) che un singolo individuo piatto non potrebbe portare."@it .
+
+#################################################################
+# 17. DOMANDE DI COMPETENZA NEGATIVE
+#
+# Documentiamo qui esplicitamente non solo cio' che l'ontologia PUO'
+# rispondere (le otto competency question positive in sparql/) ma anche
+# cio' che NON puo' rispondere per limite strutturale di OWL DL
+# (monotono, senza tempo, senza negazione-come-fallimento nativa),
+# elencando le domande di competenza negative. Non sono tradotte in file
+# .rq perche' non sono interrogabili: la loro assenza e' il punto, non
+# un'omissione da correggere.
+#################################################################
+
+aiaph:negativeCompetencyQuestionNote a owl:AnnotationProperty ;
+    rdfs:label "domanda di competenza negativa"@it .
+
+aiaph: aiaph:negativeCompetencyQuestionNote
+    "CQ-NEG-1: 'Lo strumento X e' diventato piu' accurato tra la versione pubblicata nel 2022 e quella del 2024?' — Non rispondibile: il grafo non modella il TEMPO come dimensione delle proprieta' (nessuna reificazione temporale/4D delle misure), ogni aiaph:EffectSizeMeasurement e' legata a una singola ClinicalApplication-istante, non a una serie storica dello stesso strumento."@it ,
+    "CQ-NEG-2: 'Perche' gli strumenti covert/consciential (Famiglia B) mostrano un'eterogeneita' (I²) molto piu' alta di quelli comportamentali?' — Non rispondibile come inferenza del reasoner: OWL DL descrive cosa e' vero nel grafo (valori di iSquared asseriti per i due aiaph:MetaAnalyticPool), non relazioni CAUSALI tra la natura del segnale neurale e la dispersione statistica; questa e' un'interpretazione che resta nel testo discorsivo (meta-analysis-direction.md), non nell'assiomatica."@it ,
+    "CQ-NEG-3: 'Quali applicazioni NON hanno ancora un limite dichiarato, cioe' sono scientificamente solide senza riserve?' — Non rispondibile come fatto clinico, per lo stesso limite di Open World Assumption discusso in §1b per UndifferentiatedByAphasiaSubtype: l'assenza di una tripla hasLimitation non autorizza a concludere che un limite non esista, solo che non e' stato ancora annotato. Una query SPARQL con FILTER NOT EXISTS restituirebbe comunque dei risultati, sintatticamente corretti, ma qui l'assenza di annotazione NON e' trattata come il fenomeno misurato (a differenza del catalogo deliberatamente chiuso di §1b): nessuna delle 40 ClinicalApplication di questo grafo e' mai stata descritta come 'priva di limiti' dalle fonti originarie, quindi un'assenza di tripla hasLimitation significherebbe qui lacuna di annotazione, non assenza di limiti clinici reali — la distinzione che questa CQ negativa vuole rendere esplicita."@it ,
+    "CQ-NEG-4: 'Un paziente con un profilo misto (non classificabile in una sola sindrome) a quale sottotipo appartiene?' — Non rispondibile in modo univoco: le sindromi foglia non-globali sono dichiarate owl:AllDisjointClasses (§2), quindi il reasoner segnalerebbe un'inconsistenza se un singolo individuo-paziente fosse asserito come istanza di due di esse contemporaneamente. Questo e' un limite dichiarato del modello categoriale stesso (si veda la NOTA EPISTEMOLOGICA su aiaph:AphasiaType, §1), non un bug: aiaph:AtypicalOrUnclassifiedPPA e' la sola valvola di sfogo prevista, e solo per il ramo PPA."@it .
+
+# EOF

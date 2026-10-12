@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: "Se usi questa ontologia, il dataset o la meta-analisi, citali come segue."
+type: dataset
+title: "AIAphasia: un'ontologia OWL e un knowledge graph per l'intelligenza artificiale applicata alla diagnosi, al trattamento e alla prognosi dell'afasia"
+abstract: >-
+  AIAphasia è un'ontologia OWL formale e un knowledge graph popolato che mappa 40 strumenti e studi
+  di intelligenza artificiale (2007-2026) applicati alla diagnosi, prognosi, trattamento e comunicazione
+  assistita dell'afasia. L'ontologia formalizza una tassonomia clinica a due rami eziologici — afasia
+  post-ictus, secondo il modello neoclassico di Boston, e afasia progressiva primaria, secondo i criteri
+  di consenso di Gorno-Tempini et al. (2011) — allineata esplicitamente a DOLCE-Ultralite (pattern
+  Descriptions & Situations) e, dominio per dominio, alla classificazione ICF dell'OMS; validata con il
+  reasoner HermiT senza alcuna inconsistenza logica. Due classi definite, UndifferentiatedByAphasiaSubtype
+  (operazionalizzata come query SPARQL a mondo chiuso sul catalogo curato degli strumenti mappati) e
+  HighEvidenceApplication (derivata da valori dichiarati e correttamente inferita da HermiT), fanno
+  emergere rispettivamente quanta della letteratura tratti l'afasia come categoria indifferenziata invece
+  di confrontarsi con la sua eterogeneità clinica, e quante applicazioni poggino su evidenza clinica
+  robusta; vincoli di cardinalità qualificata rendono inoltre ogni applicazione clinica un'istanza ben
+  formata per costruzione. Una proprietà derivata via property chain OWL collega direttamente ogni
+  strumento al sottotipo trattato attraverso la cerniera reificata ClinicalApplication. L'ontologia
+  documenta inoltre, oltre alle proprie domande di competenza positive, un insieme di domande di
+  competenza negative derivanti da limiti strutturali di OWL DL (monotonia, assenza di tempo,
+  open-world assumption). Test diagnostici, tecniche di IA e domini extra-linguistici sono collegati
+  da proprietà dedicate (modalità valutata, sintomo rilevato, modalità elaborata, dominio
+  extra-linguistico associato) e una proprietà simmetrica lega i sintomi clinicamente co-occorrenti,
+  con la direzione inversa inferita dal reasoner. Il knowledge graph formalizza infine una
+  meta-analisi statistica che confronta gli strumenti IA che operano sul comportamento linguistico
+  osservabile con quelli che decodificano direttamente dal segnale neurale durante il linguaggio
+  interiore/immaginato, rappresentando effect size, stime aggregate a effetti casuali e un test di
+  significatività come individui reificati di prima classe nel grafo.
+authors:
+  - name: "(aggiungi qui il tuo nome)"
+    # family-names: " "
+    # given-names: " "
+    # orcid: "https://orcid.org/0000-0000-0000-0000"
+license: CC-BY-4.0
+repository-code: "https://github.com/YOUR-GH-USERNAME/aiaphasia"
+keywords:
+  - ontology
+  - owl
+  - knowledge-graph
+  - aphasia
+  - artificial-intelligence
+  - meta-analysis
+  - digital-humanities
+  - semantic-web
+  - clinical-informatics
+  - protege
+  - sparql
+version: "1.0.0"
+date-released: "2026-09-22"

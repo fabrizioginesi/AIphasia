@@ -1,0 +1,20 @@
+# Competency Question 5
+# "Quante applicazioni cliniche non dichiarano affatto un sottotipo di afasia target,
+#  trattando l'afasia come categoria indifferenziata?"
+#
+# Nota: usa il pattern FILTER NOT EXISTS, portabile anche senza reasoner. Su un
+# endpoint con inferenza attiva è equivalente a: SELECT (COUNT(?ca) AS ?n) WHERE
+# { ?ca a aiaph:UndifferentiatedByAphasiaSubtype }
+#
+# Atteso: 27 applicazioni su 40 (a settembre 2026).
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+
+SELECT (COUNT(DISTINCT ?ca) AS ?n_indifferenziate) WHERE {
+  ?ca a ?tipoApplicazione .
+  VALUES ?tipoApplicazione {
+    aiaph:TherapeuticApplication aiaph:DiagnosticApplication
+    aiaph:PrognosticApplication aiaph:AssistiveApplication
+  }
+  FILTER NOT EXISTS { ?ca aiaph:targetsAphasiaType ?qualsiasiTipo . }
+}

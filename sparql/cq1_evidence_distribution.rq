@@ -1,0 +1,15 @@
+# Competency Question 1
+# "Qual è il livello di evidenza clinica associato agli strumenti mappati, e come si distribuisce?"
+#
+# Atteso: la maggioranza degli strumenti si colloca a livello 4 (prototipo sperimentale);
+# solo un caso raggiunge il livello 1 (RCT/revisione sistematica).
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+
+SELECT ?livello ?score (COUNT(?ca) AS ?n) WHERE {
+  ?ca aiaph:hasEvidenceLevel ?lvl .
+  ?lvl rdfs:label ?livello ; aiaph:evidenceScore ?score .
+  FILTER(lang(?livello) = "it")
+}
+GROUP BY ?livello ?score
+ORDER BY DESC(?score)

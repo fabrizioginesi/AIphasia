@@ -1,0 +1,13 @@
+# Competency Question 2
+# "Come si è evoluto nel tempo il numero di strumenti IA pubblicati per l'afasia?"
+#
+# Atteso: crescita concentrata negli ultimi 5 anni (2022-2026), con i modelli
+# generativi (LLM) comparsi solo dal 2023.
+
+PREFIX aiaph: <https://w3id.org/aiaphasia#>
+
+SELECT ?anno (COUNT(?tool) AS ?n) WHERE {
+  ?tool a aiaph:AITool ; aiaph:releaseYear ?anno .
+}
+GROUP BY ?anno
+ORDER BY ?anno

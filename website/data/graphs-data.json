@@ -1,0 +1,826 @@
+{
+ "evidence": {
+  "2": [
+   {
+    "name": "Constant Therapy",
+    "url": "https://constanttherapyhealth.com/science/"
+   },
+   {
+    "name": "Semi immersive virtual reality conversational therapy",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7428879/"
+   },
+   {
+    "name": "iTalkBetter",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11056404/"
+   }
+  ],
+  "3": [
+   {
+    "name": "ASR based tablet app for treating apraxia of speech with concomitant aphasia",
+    "url": "https://pubs.asha.org/doi/10.1044/2018_AJSLP-16-0243"
+   },
+   {
+    "name": "AphasiaScripts",
+    "url": "https://pubs.asha.org/doi/abs/10.1044/1058-0360%282008/003%29"
+   },
+   {
+    "name": "EEG neurofeedback during word finding tasks for chronic aphasia",
+    "url": "https://academic.oup.com/braincomms/article/4/1/fcac008/6511194"
+   },
+   {
+    "name": "MARS, machine analysis and reporting of spoken personal stories with aphasia",
+    "url": "https://www.citystgeorges.ac.uk/news-and-events/news/2026/july/mars-project-wins-tech4good-judges-award"
+   },
+   {
+    "name": "Mobile virtual reality app for post stroke language rehabilitation",
+    "url": "https://games.jmir.org/2022/2/e30196"
+   },
+   {
+    "name": "Speech neuroprosthesis based on a brain computer interface (the BRAVO trial)",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34260835/"
+   },
+   {
+    "name": "Verb Network Strengthening Treatment (VNeST), a computerised teletherapy version",
+    "url": "https://tactustherapy.com/vnest-verb-network-strengthening-app/"
+   }
+  ],
+  "1": [
+   {
+    "name": "Computerised Speech and Language Therapy (CSLT), the Big CACTUS trial",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10731555/"
+   }
+  ],
+  "4": [
+   {
+    "name": "3D CNN on brain morphometry predicting aphasia severity",
+    "url": "https://www.nature.com/articles/s43856-024-00541-8"
+   },
+   {
+    "name": "ASR plus SVM pipeline detecting aphasia from natural Dutch speech",
+    "url": "https://arxiv.org/pdf/2408.14082"
+   },
+   {
+    "name": "Automatic identification of paraphasia targets using an LLM",
+    "url": "https://pubs.asha.org/doi/10.1044/2023_JSLHR-23-00306"
+   },
+   {
+    "name": "Automatic transcription (Whisper) classifying Primary Progressive Aphasia",
+    "url": "https://www.medrxiv.org/content/10.64898/2026.02.24.26346981.full.pdf"
+   },
+   {
+    "name": "CNNeeg1-1 classifying 5 imagined vowels",
+    "url": "https://doi.org/10.3390/s21196503"
+   },
+   {
+    "name": "Careful Whisper, an interpretable pipeline for aphasia voice biomarkers",
+    "url": "https://arxiv.org/pdf/2308.01327"
+   },
+   {
+    "name": "ChatPhasia",
+    "url": "https://doi.org/10.25447/sit.29163800.v1"
+   },
+   {
+    "name": "Deep neural network classifier on MFCC features for aphasia severity",
+    "url": "https://www.mdpi.com/1424-8220/22/18/6966"
+   },
+   {
+    "name": "Design probes for AI guided AAC systems for complex communication needs",
+    "url": "https://arxiv.org/abs/2504.09435"
+   },
+   {
+    "name": "EEG Transformer classifying 13 imagined speech classes",
+    "url": "https://arxiv.org/abs/2112.09239"
+   },
+   {
+    "name": "EEGNet classifying 5 imagined Spanish words",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12245923/"
+   },
+   {
+    "name": "Embodied conversational agent (LLM based) with the Furhat robot",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13062796/"
+   },
+   {
+    "name": "Estimating aphasia severity (AQ) from spontaneous discourse features",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11016805/"
+   },
+   {
+    "name": "LSTM with wavelet scattering transform on imagined commands",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10295790/"
+   },
+   {
+    "name": "Machine learning model predicting recovery in bilingual post stroke aphasia",
+    "url": "https://www.ahajournals.org/doi/10.1161/STROKEAHA.124.047867"
+   },
+   {
+    "name": "Machine learning prediction of 12 month aphasia resolution from the acute phase",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13193026/"
+   },
+   {
+    "name": "Multimodal prediction of aphasia severity (WAB-R AQ) from neuroimaging",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40554033/"
+   },
+   {
+    "name": "Neural machine translation of aphasic sentences into fluent sentences",
+    "url": "https://aclanthology.org/2022.clib-1.20/"
+   },
+   {
+    "name": "P300 visual paradigm BCI for aphasia rehabilitation",
+    "url": "https://www.scitepress.org/Papers/2025/142995/142995.pdf"
+   },
+   {
+    "name": "PLORAS, predicting language outcome and recovery after stroke",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12351174/"
+   },
+   {
+    "name": "RehabilitIA",
+    "url": "https://link.springer.com/chapter/10.1007/978-3-032-35390-0_13"
+   },
+   {
+    "name": "SONIVA, stroke detection from Whisper embeddings",
+    "url": "https://www.researchgate.net/publication/392430279_SONIVA_Speech_recOgNItion_Validation_in_Aphasia"
+   },
+   {
+    "name": "SVM on EEG neural tracking for aphasia detection",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40039757/"
+   },
+   {
+    "name": "Seq2seq model for automatic paraphasia detection",
+    "url": "https://arxiv.org/pdf/2312.10518"
+   },
+   {
+    "name": "Single channel EEG decoding imagined Chinese characters",
+    "url": "https://www.sciencedirect.com/science/article/pii/S2589238X2600001X"
+   },
+   {
+    "name": "SpeakNow",
+    "url": "https://arxiv.org/pdf/2603.22357"
+   }
+  ],
+  "5": [
+   {
+    "name": "Fusion of large language models and non invasive BCI spellers",
+    "url": "https://www.mdpi.com/1424-8220/25/13/3987"
+   },
+   {
+    "name": "Informal clinical use of general purpose LLMs to generate therapy materials",
+    "url": "https://brainwisemedia.com/using-ai-to-treat-aphasia/"
+   },
+   {
+    "name": "Lingraphica TalkPath Therapy and Conversations",
+    "url": "https://lingraphica.com/talkpath-therapy-aphasia-app/"
+   }
+  ]
+ },
+ "growth": {
+  "2013": [
+   {
+    "name": "Constant Therapy",
+    "url": "https://constanttherapyhealth.com/science/"
+   },
+   {
+    "name": "Lingraphica TalkPath Therapy and Conversations",
+    "url": "https://lingraphica.com/talkpath-therapy-aphasia-app/"
+   }
+  ],
+  "2020": [
+   {
+    "name": "Semi immersive virtual reality conversational therapy",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7428879/"
+   },
+   {
+    "name": "iTalkBetter",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11056404/"
+   }
+  ],
+  "2007": [
+   {
+    "name": "AphasiaScripts",
+    "url": "https://pubs.asha.org/doi/abs/10.1044/1058-0360%282008/003%29"
+   }
+  ],
+  "2014": [
+   {
+    "name": "Verb Network Strengthening Treatment (VNeST), a computerised teletherapy version",
+    "url": "https://tactustherapy.com/vnest-verb-network-strengthening-app/"
+   }
+  ],
+  "2019": [
+   {
+    "name": "ASR based tablet app for treating apraxia of speech with concomitant aphasia",
+    "url": "https://pubs.asha.org/doi/10.1044/2018_AJSLP-16-0243"
+   },
+   {
+    "name": "Computerised Speech and Language Therapy (CSLT), the Big CACTUS trial",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10731555/"
+   }
+  ],
+  "2024": [
+   {
+    "name": "3D CNN on brain morphometry predicting aphasia severity",
+    "url": "https://www.nature.com/articles/s43856-024-00541-8"
+   },
+   {
+    "name": "ASR plus SVM pipeline detecting aphasia from natural Dutch speech",
+    "url": "https://arxiv.org/pdf/2408.14082"
+   },
+   {
+    "name": "Estimating aphasia severity (AQ) from spontaneous discourse features",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11016805/"
+   },
+   {
+    "name": "MARS, machine analysis and reporting of spoken personal stories with aphasia",
+    "url": "https://www.citystgeorges.ac.uk/news-and-events/news/2026/july/mars-project-wins-tech4good-judges-award"
+   },
+   {
+    "name": "SVM on EEG neural tracking for aphasia detection",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40039757/"
+   }
+  ],
+  "2026": [
+   {
+    "name": "Automatic transcription (Whisper) classifying Primary Progressive Aphasia",
+    "url": "https://www.medrxiv.org/content/10.64898/2026.02.24.26346981.full.pdf"
+   },
+   {
+    "name": "Embodied conversational agent (LLM based) with the Furhat robot",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13062796/"
+   },
+   {
+    "name": "Machine learning prediction of 12 month aphasia resolution from the acute phase",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13193026/"
+   },
+   {
+    "name": "RehabilitIA",
+    "url": "https://link.springer.com/chapter/10.1007/978-3-032-35390-0_13"
+   },
+   {
+    "name": "Single channel EEG decoding imagined Chinese characters",
+    "url": "https://www.sciencedirect.com/science/article/pii/S2589238X2600001X"
+   },
+   {
+    "name": "SpeakNow",
+    "url": "https://arxiv.org/pdf/2603.22357"
+   }
+  ],
+  "2023": [
+   {
+    "name": "Automatic identification of paraphasia targets using an LLM",
+    "url": "https://pubs.asha.org/doi/10.1044/2023_JSLHR-23-00306"
+   },
+   {
+    "name": "Careful Whisper, an interpretable pipeline for aphasia voice biomarkers",
+    "url": "https://arxiv.org/pdf/2308.01327"
+   },
+   {
+    "name": "Informal clinical use of general purpose LLMs to generate therapy materials",
+    "url": "https://brainwisemedia.com/using-ai-to-treat-aphasia/"
+   },
+   {
+    "name": "LSTM with wavelet scattering transform on imagined commands",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10295790/"
+   },
+   {
+    "name": "Seq2seq model for automatic paraphasia detection",
+    "url": "https://arxiv.org/pdf/2312.10518"
+   }
+  ],
+  "2025": [
+   {
+    "name": "ChatPhasia",
+    "url": "https://doi.org/10.25447/sit.29163800.v1"
+   },
+   {
+    "name": "Design probes for AI guided AAC systems for complex communication needs",
+    "url": "https://arxiv.org/abs/2504.09435"
+   },
+   {
+    "name": "EEGNet classifying 5 imagined Spanish words",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12245923/"
+   },
+   {
+    "name": "Fusion of large language models and non invasive BCI spellers",
+    "url": "https://www.mdpi.com/1424-8220/25/13/3987"
+   },
+   {
+    "name": "Machine learning model predicting recovery in bilingual post stroke aphasia",
+    "url": "https://www.ahajournals.org/doi/10.1161/STROKEAHA.124.047867"
+   },
+   {
+    "name": "Multimodal prediction of aphasia severity (WAB-R AQ) from neuroimaging",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40554033/"
+   },
+   {
+    "name": "P300 visual paradigm BCI for aphasia rehabilitation",
+    "url": "https://www.scitepress.org/Papers/2025/142995/142995.pdf"
+   },
+   {
+    "name": "SONIVA, stroke detection from Whisper embeddings",
+    "url": "https://www.researchgate.net/publication/392430279_SONIVA_Speech_recOgNItion_Validation_in_Aphasia"
+   }
+  ],
+  "2021": [
+   {
+    "name": "CNNeeg1-1 classifying 5 imagined vowels",
+    "url": "https://doi.org/10.3390/s21196503"
+   },
+   {
+    "name": "EEG Transformer classifying 13 imagined speech classes",
+    "url": "https://arxiv.org/abs/2112.09239"
+   },
+   {
+    "name": "Speech neuroprosthesis based on a brain computer interface (the BRAVO trial)",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34260835/"
+   }
+  ],
+  "2016": [
+   {
+    "name": "PLORAS, predicting language outcome and recovery after stroke",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12351174/"
+   }
+  ],
+  "2022": [
+   {
+    "name": "Deep neural network classifier on MFCC features for aphasia severity",
+    "url": "https://www.mdpi.com/1424-8220/22/18/6966"
+   },
+   {
+    "name": "EEG neurofeedback during word finding tasks for chronic aphasia",
+    "url": "https://academic.oup.com/braincomms/article/4/1/fcac008/6511194"
+   },
+   {
+    "name": "Mobile virtual reality app for post stroke language rehabilitation",
+    "url": "https://games.jmir.org/2022/2/e30196"
+   },
+   {
+    "name": "Neural machine translation of aphasic sentences into fluent sentences",
+    "url": "https://aclanthology.org/2022.clib-1.20/"
+   }
+  ]
+ },
+ "modality": {
+  "OralProduction": [
+   {
+    "name": "ASR based tablet app for treating apraxia of speech with concomitant aphasia",
+    "url": "https://pubs.asha.org/doi/10.1044/2018_AJSLP-16-0243"
+   },
+   {
+    "name": "ASR plus SVM pipeline detecting aphasia from natural Dutch speech",
+    "url": "https://arxiv.org/pdf/2408.14082"
+   },
+   {
+    "name": "AphasiaScripts",
+    "url": "https://pubs.asha.org/doi/abs/10.1044/1058-0360%282008/003%29"
+   },
+   {
+    "name": "Automatic identification of paraphasia targets using an LLM",
+    "url": "https://pubs.asha.org/doi/10.1044/2023_JSLHR-23-00306"
+   },
+   {
+    "name": "Automatic transcription (Whisper) classifying Primary Progressive Aphasia",
+    "url": "https://www.medrxiv.org/content/10.64898/2026.02.24.26346981.full.pdf"
+   },
+   {
+    "name": "Careful Whisper, an interpretable pipeline for aphasia voice biomarkers",
+    "url": "https://arxiv.org/pdf/2308.01327"
+   },
+   {
+    "name": "ChatPhasia",
+    "url": "https://doi.org/10.25447/sit.29163800.v1"
+   },
+   {
+    "name": "Computerised Speech and Language Therapy (CSLT), the Big CACTUS trial",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10731555/"
+   },
+   {
+    "name": "Constant Therapy",
+    "url": "https://constanttherapyhealth.com/science/"
+   },
+   {
+    "name": "Deep neural network classifier on MFCC features for aphasia severity",
+    "url": "https://www.mdpi.com/1424-8220/22/18/6966"
+   },
+   {
+    "name": "Embodied conversational agent (LLM based) with the Furhat robot",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13062796/"
+   },
+   {
+    "name": "Estimating aphasia severity (AQ) from spontaneous discourse features",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11016805/"
+   },
+   {
+    "name": "Informal clinical use of general purpose LLMs to generate therapy materials",
+    "url": "https://brainwisemedia.com/using-ai-to-treat-aphasia/"
+   },
+   {
+    "name": "Lingraphica TalkPath Therapy and Conversations",
+    "url": "https://lingraphica.com/talkpath-therapy-aphasia-app/"
+   },
+   {
+    "name": "MARS, machine analysis and reporting of spoken personal stories with aphasia",
+    "url": "https://www.citystgeorges.ac.uk/news-and-events/news/2026/july/mars-project-wins-tech4good-judges-award"
+   },
+   {
+    "name": "Machine learning model predicting recovery in bilingual post stroke aphasia",
+    "url": "https://www.ahajournals.org/doi/10.1161/STROKEAHA.124.047867"
+   },
+   {
+    "name": "Mobile virtual reality app for post stroke language rehabilitation",
+    "url": "https://games.jmir.org/2022/2/e30196"
+   },
+   {
+    "name": "Multimodal prediction of aphasia severity (WAB-R AQ) from neuroimaging",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40554033/"
+   },
+   {
+    "name": "P300 visual paradigm BCI for aphasia rehabilitation",
+    "url": "https://www.scitepress.org/Papers/2025/142995/142995.pdf"
+   },
+   {
+    "name": "RehabilitIA",
+    "url": "https://link.springer.com/chapter/10.1007/978-3-032-35390-0_13"
+   },
+   {
+    "name": "SONIVA, stroke detection from Whisper embeddings",
+    "url": "https://www.researchgate.net/publication/392430279_SONIVA_Speech_recOgNItion_Validation_in_Aphasia"
+   },
+   {
+    "name": "Semi immersive virtual reality conversational therapy",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7428879/"
+   },
+   {
+    "name": "Seq2seq model for automatic paraphasia detection",
+    "url": "https://arxiv.org/pdf/2312.10518"
+   },
+   {
+    "name": "SpeakNow",
+    "url": "https://arxiv.org/pdf/2603.22357"
+   },
+   {
+    "name": "Speech neuroprosthesis based on a brain computer interface (the BRAVO trial)",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34260835/"
+   },
+   {
+    "name": "Verb Network Strengthening Treatment (VNeST), a computerised teletherapy version",
+    "url": "https://tactustherapy.com/vnest-verb-network-strengthening-app/"
+   },
+   {
+    "name": "iTalkBetter",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11056404/"
+   }
+  ],
+  "WrittenProduction": [
+   {
+    "name": "Constant Therapy",
+    "url": "https://constanttherapyhealth.com/science/"
+   },
+   {
+    "name": "Informal clinical use of general purpose LLMs to generate therapy materials",
+    "url": "https://brainwisemedia.com/using-ai-to-treat-aphasia/"
+   },
+   {
+    "name": "Neural machine translation of aphasic sentences into fluent sentences",
+    "url": "https://aclanthology.org/2022.clib-1.20/"
+   }
+  ],
+  "OralComprehension": [
+   {
+    "name": "CNNeeg1-1 classifying 5 imagined vowels",
+    "url": "https://doi.org/10.3390/s21196503"
+   },
+   {
+    "name": "EEG Transformer classifying 13 imagined speech classes",
+    "url": "https://arxiv.org/abs/2112.09239"
+   },
+   {
+    "name": "EEG neurofeedback during word finding tasks for chronic aphasia",
+    "url": "https://academic.oup.com/braincomms/article/4/1/fcac008/6511194"
+   },
+   {
+    "name": "EEGNet classifying 5 imagined Spanish words",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12245923/"
+   },
+   {
+    "name": "Embodied conversational agent (LLM based) with the Furhat robot",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13062796/"
+   },
+   {
+    "name": "LSTM with wavelet scattering transform on imagined commands",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10295790/"
+   },
+   {
+    "name": "Mobile virtual reality app for post stroke language rehabilitation",
+    "url": "https://games.jmir.org/2022/2/e30196"
+   },
+   {
+    "name": "Multimodal prediction of aphasia severity (WAB-R AQ) from neuroimaging",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40554033/"
+   },
+   {
+    "name": "SVM on EEG neural tracking for aphasia detection",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40039757/"
+   },
+   {
+    "name": "Single channel EEG decoding imagined Chinese characters",
+    "url": "https://www.sciencedirect.com/science/article/pii/S2589238X2600001X"
+   },
+   {
+    "name": "SpeakNow",
+    "url": "https://arxiv.org/pdf/2603.22357"
+   }
+  ]
+ },
+ "subtypes": {
+  "anomic": [
+   {
+    "name": "Careful Whisper, an interpretable pipeline for aphasia voice biomarkers",
+    "url": "https://arxiv.org/pdf/2308.01327"
+   },
+   {
+    "name": "Computerised Speech and Language Therapy (CSLT), the Big CACTUS trial",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10731555/"
+   },
+   {
+    "name": "Constant Therapy",
+    "url": "https://constanttherapyhealth.com/science/"
+   },
+   {
+    "name": "P300 visual paradigm BCI for aphasia rehabilitation",
+    "url": "https://www.scitepress.org/Papers/2025/142995/142995.pdf"
+   },
+   {
+    "name": "RehabilitIA",
+    "url": "https://link.springer.com/chapter/10.1007/978-3-032-35390-0_13"
+   },
+   {
+    "name": "Semi immersive virtual reality conversational therapy",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7428879/"
+   },
+   {
+    "name": "Verb Network Strengthening Treatment (VNeST), a computerised teletherapy version",
+    "url": "https://tactustherapy.com/vnest-verb-network-strengthening-app/"
+   },
+   {
+    "name": "iTalkBetter",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11056404/"
+   }
+  ],
+  "broca": [
+   {
+    "name": "AphasiaScripts",
+    "url": "https://pubs.asha.org/doi/abs/10.1044/1058-0360%282008/003%29"
+   },
+   {
+    "name": "Careful Whisper, an interpretable pipeline for aphasia voice biomarkers",
+    "url": "https://arxiv.org/pdf/2308.01327"
+   },
+   {
+    "name": "Constant Therapy",
+    "url": "https://constanttherapyhealth.com/science/"
+   },
+   {
+    "name": "Neural machine translation of aphasic sentences into fluent sentences",
+    "url": "https://aclanthology.org/2022.clib-1.20/"
+   },
+   {
+    "name": "RehabilitIA",
+    "url": "https://link.springer.com/chapter/10.1007/978-3-032-35390-0_13"
+   },
+   {
+    "name": "Semi immersive virtual reality conversational therapy",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7428879/"
+   },
+   {
+    "name": "Verb Network Strengthening Treatment (VNeST), a computerised teletherapy version",
+    "url": "https://tactustherapy.com/vnest-verb-network-strengthening-app/"
+   },
+   {
+    "name": "iTalkBetter",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11056404/"
+   }
+  ],
+  "conduction": [
+   {
+    "name": "Automatic identification of paraphasia targets using an LLM",
+    "url": "https://pubs.asha.org/doi/10.1044/2023_JSLHR-23-00306"
+   },
+   {
+    "name": "P300 visual paradigm BCI for aphasia rehabilitation",
+    "url": "https://www.scitepress.org/Papers/2025/142995/142995.pdf"
+   },
+   {
+    "name": "Seq2seq model for automatic paraphasia detection",
+    "url": "https://arxiv.org/pdf/2312.10518"
+   },
+   {
+    "name": "Verb Network Strengthening Treatment (VNeST), a computerised teletherapy version",
+    "url": "https://tactustherapy.com/vnest-verb-network-strengthening-app/"
+   }
+  ],
+  "svppa": [
+   {
+    "name": "Automatic transcription (Whisper) classifying Primary Progressive Aphasia",
+    "url": "https://www.medrxiv.org/content/10.64898/2026.02.24.26346981.full.pdf"
+   }
+  ],
+  "lvppa": [
+   {
+    "name": "Automatic transcription (Whisper) classifying Primary Progressive Aphasia",
+    "url": "https://www.medrxiv.org/content/10.64898/2026.02.24.26346981.full.pdf"
+   }
+  ],
+  "nfvppa": [
+   {
+    "name": "Automatic transcription (Whisper) classifying Primary Progressive Aphasia",
+    "url": "https://www.medrxiv.org/content/10.64898/2026.02.24.26346981.full.pdf"
+   }
+  ],
+  "global": [
+   {
+    "name": "Careful Whisper, an interpretable pipeline for aphasia voice biomarkers",
+    "url": "https://arxiv.org/pdf/2308.01327"
+   }
+  ],
+  "wernicke": [
+   {
+    "name": "Automatic identification of paraphasia targets using an LLM",
+    "url": "https://pubs.asha.org/doi/10.1044/2023_JSLHR-23-00306"
+   },
+   {
+    "name": "Careful Whisper, an interpretable pipeline for aphasia voice biomarkers",
+    "url": "https://arxiv.org/pdf/2308.01327"
+   },
+   {
+    "name": "Seq2seq model for automatic paraphasia detection",
+    "url": "https://arxiv.org/pdf/2312.10518"
+   }
+  ]
+ },
+ "undiff": [
+  {
+   "name": "3D CNN on brain morphometry predicting aphasia severity",
+   "url": "https://www.nature.com/articles/s43856-024-00541-8"
+  },
+  {
+   "name": "ASR based tablet app for treating apraxia of speech with concomitant aphasia",
+   "url": "https://pubs.asha.org/doi/10.1044/2018_AJSLP-16-0243"
+  },
+  {
+   "name": "ASR plus SVM pipeline detecting aphasia from natural Dutch speech",
+   "url": "https://arxiv.org/pdf/2408.14082"
+  },
+  {
+   "name": "CNNeeg1-1 classifying 5 imagined vowels",
+   "url": "https://doi.org/10.3390/s21196503"
+  },
+  {
+   "name": "ChatPhasia",
+   "url": "https://doi.org/10.25447/sit.29163800.v1"
+  },
+  {
+   "name": "Deep neural network classifier on MFCC features for aphasia severity",
+   "url": "https://www.mdpi.com/1424-8220/22/18/6966"
+  },
+  {
+   "name": "Design probes for AI guided AAC systems for complex communication needs",
+   "url": "https://arxiv.org/abs/2504.09435"
+  },
+  {
+   "name": "EEG Transformer classifying 13 imagined speech classes",
+   "url": "https://arxiv.org/abs/2112.09239"
+  },
+  {
+   "name": "EEG neurofeedback during word finding tasks for chronic aphasia",
+   "url": "https://academic.oup.com/braincomms/article/4/1/fcac008/6511194"
+  },
+  {
+   "name": "EEGNet classifying 5 imagined Spanish words",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12245923/"
+  },
+  {
+   "name": "Embodied conversational agent (LLM based) with the Furhat robot",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13062796/"
+  },
+  {
+   "name": "Estimating aphasia severity (AQ) from spontaneous discourse features",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11016805/"
+  },
+  {
+   "name": "Fusion of large language models and non invasive BCI spellers",
+   "url": "https://www.mdpi.com/1424-8220/25/13/3987"
+  },
+  {
+   "name": "Informal clinical use of general purpose LLMs to generate therapy materials",
+   "url": "https://brainwisemedia.com/using-ai-to-treat-aphasia/"
+  },
+  {
+   "name": "LSTM with wavelet scattering transform on imagined commands",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10295790/"
+  },
+  {
+   "name": "Lingraphica TalkPath Therapy and Conversations",
+   "url": "https://lingraphica.com/talkpath-therapy-aphasia-app/"
+  },
+  {
+   "name": "MARS, machine analysis and reporting of spoken personal stories with aphasia",
+   "url": "https://www.citystgeorges.ac.uk/news-and-events/news/2026/july/mars-project-wins-tech4good-judges-award"
+  },
+  {
+   "name": "Machine learning model predicting recovery in bilingual post stroke aphasia",
+   "url": "https://www.ahajournals.org/doi/10.1161/STROKEAHA.124.047867"
+  },
+  {
+   "name": "Machine learning prediction of 12 month aphasia resolution from the acute phase",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13193026/"
+  },
+  {
+   "name": "Mobile virtual reality app for post stroke language rehabilitation",
+   "url": "https://games.jmir.org/2022/2/e30196"
+  },
+  {
+   "name": "Multimodal prediction of aphasia severity (WAB-R AQ) from neuroimaging",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/40554033/"
+  },
+  {
+   "name": "PLORAS, predicting language outcome and recovery after stroke",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12351174/"
+  },
+  {
+   "name": "SONIVA, stroke detection from Whisper embeddings",
+   "url": "https://www.researchgate.net/publication/392430279_SONIVA_Speech_recOgNItion_Validation_in_Aphasia"
+  },
+  {
+   "name": "SVM on EEG neural tracking for aphasia detection",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/40039757/"
+  },
+  {
+   "name": "Single channel EEG decoding imagined Chinese characters",
+   "url": "https://www.sciencedirect.com/science/article/pii/S2589238X2600001X"
+  },
+  {
+   "name": "SpeakNow",
+   "url": "https://arxiv.org/pdf/2603.22357"
+  },
+  {
+   "name": "Speech neuroprosthesis based on a brain computer interface (the BRAVO trial)",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/34260835/"
+  }
+ ],
+ "metaA": [
+  {
+   "name": "SONIVA, stroke detection from Whisper embeddings",
+   "url": "https://www.researchgate.net/publication/392430279_SONIVA_Speech_recOgNItion_Validation_in_Aphasia",
+   "h": "1.035",
+   "n": 600
+  },
+  {
+   "name": "PLORAS, outcome prediction from lesion and imaging",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12351174/",
+   "h": "0.990",
+   "n": 758
+  },
+  {
+   "name": "SVM on Dutch aphasic speech (Barberis et al. 2024)",
+   "url": "https://arxiv.org/pdf/2408.14082",
+   "h": "0.821",
+   "n": 119
+  },
+  {
+   "name": "SVM on EEG neural tracking (De Clercq et al. 2024)",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/40039757/",
+   "h": "0.787",
+   "n": 48
+  }
+ ],
+ "metaB": [
+  {
+   "name": "LSTM with wavelet scattering transform, 4 imagined commands",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10295790/",
+   "h": "1.540",
+   "n": 4
+  },
+  {
+   "name": "CNNeeg1-1, 5 imagined vowels",
+   "url": "https://doi.org/10.3390/s21196503",
+   "h": "1.438",
+   "n": 50
+  },
+  {
+   "name": "EEG Transformer, 13 imagined classes",
+   "url": "https://arxiv.org/abs/2112.09239",
+   "h": "0.706",
+   "n": 9
+  },
+  {
+   "name": "Single channel EEG, imagined Chinese characters",
+   "url": "https://www.sciencedirect.com/science/article/pii/S2589238X2600001X",
+   "h": "0.508",
+   "n": 4
+  },
+  {
+   "name": "EEGNet, 5 imagined Spanish words",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12245923/",
+   "h": "0.241",
+   "n": 24
+  }
+ ]
+}
