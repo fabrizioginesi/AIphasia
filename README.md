@@ -91,7 +91,7 @@ Questo progetto è stato sviluppato come progetto universitario, per esplorare c
 
 ## Autori
 
-- (aggiungi qui il tuo nome/handle GitHub)
+- @fabrizioginesi
 
 ## Licenza
 
